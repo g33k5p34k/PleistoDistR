@@ -20,7 +20,7 @@ This package requires at least R v4.0.5 to function, and requires the following 
 * tibble
 * stats
 
-## Usage
+## Installation
 
 To install this package in R, use the command 
 
