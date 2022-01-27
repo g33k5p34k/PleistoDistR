@@ -1,0 +1,24 @@
+Package: PleistoDist
+Title: Calculating Island Geomorphologies Over Pleistocene Time
+Version: 0.0.0.9000
+Authors@R: 
+    person("David", "Tan", , "david.tanjx@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7019-7871"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports:
+	dplyr,
+	terra,
+	sf,
+	sp,
+	raster,
+	gdistance,
+	lwgeom,
+	tibble,
+	stats
+Depends: 
+    R (>= 2.10)
