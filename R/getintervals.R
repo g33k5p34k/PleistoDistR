@@ -11,12 +11,14 @@
 #' getintervals_time(100,10) #time cutoff of 100,000 years, for 10 time intervals
 #' getintervals_time(100,10,sealvl="customfile.csv") #time cutoff of 100,000 years, for 10 time intervals, using a custom sea level reconstruction file.
 #' @export
-getintervals_time <- function(time,intervals,sealvl=system.file("extdata","sealvl.csv",package = "PleistoDist")) {
+getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 
   #time should be in kya (i.e. 10,000 years = 10 kya)
 
   message("Preparing interval file... ")
-  sealvl = read.csv(sealvl)
+  if (sealvl != bintanja_vandewal_2008) {
+    sealvl = read.csv(sealvl)
+  }
   time = as.numeric(time)
 
   #check time value to see if it makes sense
