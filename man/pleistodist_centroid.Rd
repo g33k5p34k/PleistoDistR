@@ -34,3 +34,6 @@ the centroids of the selected landmasses for each time/sea level interval. If bo
 is/are underwater, then a value of NA is returned. After calculating the pairwise island distances for each interval, this function calculates
 the time-weighted average centroid-to-centroid distance between each island pair.
 }
+\examples{
+pleistodist_centroid(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
+}

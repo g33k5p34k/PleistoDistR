@@ -34,3 +34,6 @@ a line perpendicular to the centroid-centroid line extending from the centroid o
 relative to the orientation of the receiving island, and is mostly needed for calculating the expected net inter-island migration, as defined
 in chapter 6 of MacArthur and Wilson (1967).
 }
+\examples{
+pleistodist_relativewidth(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
+}

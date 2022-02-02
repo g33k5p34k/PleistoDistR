@@ -8,8 +8,11 @@
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
 #' @examples
+#' #if using the default sea level reconstruction
 #' getintervals_time(100,10) #time cutoff of 100,000 years, for 10 time intervals
-#' getintervals_time(100,10,sealvl="customfile.csv") #time cutoff of 100,000 years, for 10 time intervals, using a custom sea level reconstruction file.
+#' #if using a custom sea level reconstruction
+#' sealvlfile <- read.csv("reconstruction.csv")
+#' getintervals_time(100,10,sealvl=sealvlfile) #time cutoff of 100,000 years, for 10 time intervals, using a custom sea level reconstruction file.
 #' @export
 getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 

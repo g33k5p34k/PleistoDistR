@@ -34,3 +34,6 @@ that minimises the number of overwater crossings. If both points lie on the same
 is/are underwater, then a value of NA is returned. After calculating the pairwise least-cost distances for each interval, this function calculates
 the time-weighted average least-cost distance between each pair of points.
 }
+\examples{
+pleistodist_leastcost(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
+}

@@ -47,3 +47,9 @@ can set a cap on the maximum number of shoreline points to sample (the default c
 is/are underwater, then a value of NA is returned. After calculating the pairwise island distances for each interval, this function calculates
 the time-weighted average mean shore-to-shore distance between each island pair.
 }
+\examples{
+#load example data, with shoreline sampling points capped at 1000
+pleistodist_meanshore(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",maxsamp=1000)
+#load example data, with no cap on the number of sampling points along the shoreline (will lead to very long runtimes for large datasets)
+pleistodist_meanshore(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",maxsamp=NA)
+}

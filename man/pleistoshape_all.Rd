@@ -33,3 +33,6 @@ This function is nonetheless provided since it allows users to calculate all thr
 each constituent function individually. PleistoDist will return a value of NA if the island is submerged underwater for that particular interval. After calculating shape metrics for each interval, this function calculates
 the time-weighted average area, perimeter, and surface area of each selected island.
 }
+\examples{
+pleistoshape_all(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
+}

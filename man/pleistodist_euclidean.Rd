@@ -25,3 +25,8 @@ This function calculates the straight-line distance ("as the crow flies) between
 Because these points are invariant across space and time and independent of sea level change, this calculation
 is only performed once instead of repeatedly across different sea level or time intervals.
 }
+\examples{
+#load example data (AntPops.shp, adapted from Darwell et al (2020))
+#note that no interval file input is needed (since Euclidean distances are time-invariant)
+pleistodist_euclidean(points="inst/extdata/AntPops.shp",epsg=3141)
+}

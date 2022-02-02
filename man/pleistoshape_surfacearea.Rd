@@ -4,15 +4,9 @@
 \alias{pleistoshape_surfacearea}
 \title{Calculate island surface area over time}
 \usage{
-pleistoshape_surfacearea(intervalfile, points, epsg)
+pleistoshape_surfacearea(points, epsg, intervalfile = "output/intervals.csv")
 }
 \arguments{
-\item{intervalfile}{This is the master control file generated using either the getintervals_time() or getintervals_sealvl()
-function that defines the number of intervals, the sea level at each interval, and the duration of each interval. By default, this
-function will use the "intervals.csv" file stored in the output folder, but users can also specify their own custom interval
-file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
-be aware that custom interval files may lead to inaccurate weighted mean calculations.}
-
 \item{points}{A user-generated multi-point shapefile (.shp) containing at least two points. If the shapefile attribute table contains a column
 labelled 'Name', the output distance matrix will use the identifiers in this column to label each pairwise comparison. Otherwise, the
 output distance matrix will use the attribute FID values instead.}
@@ -22,6 +16,12 @@ projection to accurately calculate straight-line distances between points instea
 Users should specify a projected coordinate system appropriate to the geographic region being analysed using the projection's
 associated EPSG code (https://epsg.org/home). Geographic coordinate system projections are not recommended as those will result
 in distance matrices calculated in decimal degrees rather than in distance units.}
+
+\item{intervalfile}{This is the master control file generated using either the getintervals_time() or getintervals_sealvl()
+function that defines the number of intervals, the sea level at each interval, and the duration of each interval. By default, this
+function will use the "intervals.csv" file stored in the output folder, but users can also specify their own custom interval
+file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
+be aware that custom interval files may lead to inaccurate weighted mean calculations.}
 }
 \value{
 This function outputs a matrix of island surface area estimates in long format, with one column per interval.
@@ -29,4 +29,7 @@ This function outputs a matrix of island surface area estimates in long format, 
 \description{
 This function calculates the surface area of user-specified islands at each time/sea level interval, and calculates the weighted average surface area over the user-defined time period.
 PleistoDist will return a value of NA if the island is submerged underwater for that particular interval.
+}
+\examples{
+pleistoshape_surfacearea(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 }

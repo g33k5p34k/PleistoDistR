@@ -20,6 +20,9 @@ An interval file in the automatically-generated 'output' folder. This interval f
 This function generates an interval file, which is the master file for controlling all downstream PleistoDist calculations. This file essentially simplifies Pleistocene-era sea level change into a number of discrete time intervals.
 }
 \examples{
+#if using the default sea level reconstruction
 getintervals_time(100,10) #time cutoff of 100,000 years, for 10 time intervals
-getintervals_time(100,10,sealvl="customfile.csv") #time cutoff of 100,000 years, for 10 time intervals, using a custom sea level reconstruction file. 
+#if using a custom sea level reconstruction
+sealvlfile <- read.csv("reconstruction.csv")
+getintervals_time(100,10,sealvl=sealvlfile) #time cutoff of 100,000 years, for 10 time intervals, using a custom sea level reconstruction file.
 }
