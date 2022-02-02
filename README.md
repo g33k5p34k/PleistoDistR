@@ -10,7 +10,7 @@ PleistoDist is a tool for visualising and quantifying the effects of Pleistocene
 ## Requirements
 
 This package requires at least R v4.0.5 to function, and will automatically load the following dependencies:
-* [dplyr] (https://dplyr.tidyverse.org/)
+* [dplyr] (https://dplyr.tidyverse.org/). 
 * [sf] (https://r-spatial.github.io/sf/)
 * [terra] (https://github.com/rspatial/terra)
 * [sp] (https://edzer.github.io/sp/)
