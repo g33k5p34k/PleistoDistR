@@ -1,7 +1,7 @@
 # PleistoDist R
 Distance matrices between islands normalised over Pleistocene time. A complete ground-up rebuild of PleistoDist for use with R. 
 
-[Last updated: 01 Feb 2022]
+[Last updated: 02 Feb 2022]
 
 ## Introduction
 
@@ -9,15 +9,15 @@ PleistoDist is a tool for visualising and quantifying the effects of Pleistocene
 
 ## Requirements
 
-This package requires at least R v4.0.5 to function, and requires the following dependencies:
-* dplyr
-* sf
-* terra
-* sp
-* raster
-* gdistance
-* lwgeom
-* tibble
+This package requires at least R v4.0.5 to function, and will automatically load the following dependencies:
+* [dplyr] (https://dplyr.tidyverse.org/)
+* [sf] (https://r-spatial.github.io/sf/)
+* [terra] (https://github.com/rspatial/terra)
+* [sp] (https://edzer.github.io/sp/)
+* [raster] (https://cran.r-project.org/web/packages/raster/index.html)
+* [gdistance] (https://github.com/AgrDataSci/gdistance)
+* [lwgeom] (https://r-spatial.github.io/lwgeom/)
+* [tibble] (https://tibble.tidyverse.org/)
 * stats
 
 ## Usage
@@ -78,4 +78,5 @@ Advanced users should be able to modify the PleistoDist source code to meet thei
 * Bintanja, R., & van de Wal, R. S. W. (2008). North American ice-sheet dynamics and the onset of 100,000-year glacial cycles. Nature, 454(7206), 869–872. https://doi.org/10.1038/nature07158
 * Cronin, S. J., & Neall, V. E. (2001). Holocene volcanic geology, volcanic hazard, and risk on Taveuni, Fiji. New Zealand Journal of Geology and Geophysics, 44(3), 417–437. https://doi.org/10.1080/00288306.2001.9514948
 * Darwell, C. T., Fischer, G., Sarnat, E. M., Friedman, N. R., Liu, C., Baiao, G., Mikheyev, A. S., & Economo, E. P. (2020). Genomic and phenomic analysis of island ant community assembly. Molecular Ecology, 29(9), 1611–1627. https://doi.org/10.1111/mec.15326
+* MacArthur R. H., & Wilson E. O. (1967). The Theory of Island Biogeography. Princeton, N.J.: Princeton University Press, 203 p.
 * Spratt, R. M., & Lisiecki, L. E. (2016). A Late Pleistocene sea level stack. Climate of the Past, 12(4), 1079–1092. https://doi.org/10.5194/cp-12-1079-2016
