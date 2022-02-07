@@ -1007,7 +1007,7 @@ pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") 
     for (f in 1:nrow(points_transformed)) {
       #extract coordinates for island
       p1 <- points_transformed$geometry[f]
-      message("Calculating island area ",p1_names[f],sep="")
+      message("Calculating island area of ",p1_names[f],sep="")
 
       if (nrow(invector[p1, ,op=sf::st_contains]) == 0) { #check to see if island is submerged under water
         ia <- c(ia,0)
@@ -1218,4 +1218,162 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
   }
   relmig$mean <- apply(relmig[3:ncol(relmig)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   write.csv(relmig,base::paste0("output/island_netmigration_",disttype,".csv"))
+}
+
+#' Estimate island visibility relative to horizon
+#'
+#' This function estimates the visibility of a destination island relative to a user-defined point located on or above on an origin island for each sea level/time interval.
+#' This function works by first calculating the expected horizon distance relative to the origin point, accounting for the local curvature of the Earth's surface
+#' as well as the height of both the ground level and the height of the observer above the ground level (users can set this relative height to 0 for non-flying organisms).
+#' If the destination island is within the bounds of the horizon radius, this function then calculates the area of the viewshed on the destination island relative to the origin point, to account
+#' for the effect of geographical features such as mountains blocking an observer's view. This viewshed area is thus the region visible to an observer standing at a particular
+#' height above the origin point. This function also calculates the visible area of the island relative to the total area of the island. If the destination island is not
+#' visible, then this function will return a value of 0. Do note that the horizon distance calculation is made relative to the centroid of the destination island, rather than
+#' to the specific coordinates of the destination point. Also note that this calculation is a very rough estimate and the calculated visible area may not be identical across different runs (due to the
+#' sampling method applied), and does not account for the effect of fog, mist, haze, etc. Lastly, this function calculates the weighted mean visibility over time/sea level of the destination
+#' island relative to the origin point.
+#' @param points A user-generated multi-point shapefile (.shp) containing at least two points. If the shapefile attribute table contains a column
+#' labelled 'Name', the output distance matrix will use the identifiers in this column to label each pairwise comparison. Otherwise, the
+#' output distance matrix will use the attribute FID values instead.
+#' @param epsg The projected coordinate system in EPSG code format. Because of the curvature of the Earth's surface, we need to apply a map
+#' projection to accurately calculate straight-line distances between points instead of using the default WGS84 geographical coordinate system.
+#' Users should specify a projected coordinate system appropriate to the geographic region being analysed using the projection's
+#' associated EPSG code (https://epsg.org/home). Geographic coordinate system projections are not recommended as those will result
+#' in distance matrices calculated in decimal degrees rather than in distance units.
+#' @param intervalfile This is the master control file generated using either the getintervals_time() or getintervals_sealvl()
+#' function that defines the number of intervals, the sea level at each interval, and the duration of each interval. By default, this
+#' function will use the "intervals.csv" file stored in the output folder, but users can also specify their own custom interval
+#' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
+#' be aware that custom interval files may lead to inaccurate weighted mean calculations.
+#' @param height The height of the observer relative to the ground level. This can be used to model the visibility of nearby islands to
+#' flying animals (e.g. birds, bats, insects). As such, if an origin point is defined on a pixel that is 100m above sea level, a height value of 100 will result in
+#' visibility estimates for an organism flying 200m above sea level (with sea level calibrated relative to the sea level of that particular interval).
+#' @return This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
+#' visible area on island 2 relative to the entire island area.
+#' @examples
+#' pleistodist_visibility(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",height=50)
+#' @export
+pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv",height=0) {
+  intervalfile <- read.csv(intervalfile)
+  points <- sf::st_read(points,fid_column_name="FID")
+
+  #check projection on input points, set to WGS84 (EPSG:4326) if undefined
+  if (is.na(sf::st_crs(points)$input)) {
+    sf::st_crs(points) = 4326
+  }
+
+  #extract geodetic latitude for each point and append to points file
+  points$geolat <- st_coordinates(st_transform(points,4326))[,2]
+  #reproject input points to target projection
+  points_transformed <- sf::st_transform(points,epsg)
+  numintervals = max(intervalfile$Interval)
+  #check to see if the points contains a column of unique names, otherwise use FID numbers as identifiers
+  if ("Name" %in% colnames(points_transformed) && anyDuplicated(points_transformed$Name) == 0) {
+    p1_names <- points_transformed$Name
+    p2_names <- points_transformed$Name
+
+  } else {
+    p1_names <- points_transformed$FID
+    p2_names <- points_transformed$FID
+    message("No 'Name' column with unique identifiers detected in points file, defaulting to FID values instead")
+  }
+  #create dataframe for storing visible island area
+  visiblearea <- tibble::tibble(
+    Island1 = expand.grid(p1_names,p2_names,include.equals=T)[,2],
+    Island2 = expand.grid(p1_names,p2_names,include.equals=T)[,1]
+  )
+  #create dataframe for storing visible island proportion
+  visibleprop <- tibble::tibble(
+    Island1 = expand.grid(p1_names,p2_names,include.equals=T)[,2],
+    Island2 = expand.grid(p1_names,p2_names,include.equals=T)[,1]
+  )
+  #define basic earth shape parameters
+  a = 6378137.0 #equatorial radius (in metres)
+  b = 6356752.3 #polar radius (in metres)
+  e2 = 1 - (b/a)^2 #squared eccentricity
+  #start looping through each interval
+  for (i in 0:numintervals) {
+    invector <- sf::st_read(paste("output/shapefile/interval",i,".shp",sep="")) #load interval shapefile
+    #load topo raster and correct for current sea level
+    inraster <- terra::rast(paste("output/raster_topo/interval",i,".tif",sep=""))-intervalfile$MeanDepth[i+1]
+    intvlname <- paste("interval",i,sep="")
+    #calculate resolution of inraster
+    reso <- terra::res(inraster)
+    #create empty vector for storing visible area and proportion
+    visible <- c()
+    prop <- c()
+    #start 2nd order for-loop to parse source islands
+    for (f in 1:nrow(points_transformed)) {
+      #calculate parametric latitude
+      theta <- as.numeric(atan((b/a)*tan(points$geolat[f]*(pi/180))))
+      #start 3rd order for-loop to parse sink islands
+      for (t in 1:nrow(points_transformed)) {
+        #extract coordinates for island 1
+        p1 <- points_transformed$geometry[f]
+        #extract coordinates for island 2
+        p2 <- points_transformed$geometry[t]
+        message(base::paste0("Calculating visibility of ",p2_names[t]," from ",p1_names[f]," for ",intvlname))
+        if (f==t) { #write NA for self-comparisons
+          visible <- c(visible,NA)
+          prop <- c(prop,NA)
+        } else if ((nrow(invector[p1, ,op=sf::st_contains]) || nrow(invector[p2, ,op=sf::st_contains])) == 0) { #check to see if island1 or island2 is submerged under water
+          visible <- c(visible,NA)
+          prop <- c(prop,NA)
+          message("One or both islands are underwater during this interval, writing a value of NA")
+        } else {
+          islandpair <- invector[sf::st_sfc(rbind(p1,p2),crs=epsg), ,op=sf::st_contains]
+          if (nrow(islandpair) == 1) {
+            visible <- c(visible,NA)
+            prop <- c(prop,NA)
+            message("Both points are on the same island, writing a value of NA")
+          } else {
+            island2 <- invector[p2, ,op=sf::st_contains]
+            island2_centroid <- sf::st_centroid(island2)
+            #create an object with source point from island 1 and centroid point from island 2
+            combinedpoints <- sf::st_sfc(rbind(p1,island2_centroid$geometry[1]),crs=epsg)
+            #transform points to WGS84 to facilitate calculation of azimuth
+            combinedpoints_wgs84 <- sf::st_transform(combinedpoints,4326)
+            #calculate angle relative to meridional plane (azimuth)
+            phi <- as.numeric(lwgeom::st_geod_azimuth(combinedpoints_wgs84))
+            #calculate meridional arc radius (earth's radius for that particular inter-island great circle arc), accounting for sea level change
+            Re <- intervalfile$MeanDepth[i+1]+(a*(1-e2*cos(phi)*cos(phi)*cos(theta)*cos(theta))^(3/2))/((1-e2*(1-sin(phi)*sin(phi)*cos(theta)*cos(theta)))^(1/2))
+            #calculate observer height (ground height + additional user-defined height)
+            htotal <- as.numeric(terra::extract(inraster,sf::st_coordinates(p1)))+height
+            #calculate horizon distance
+            horizond <- Re*acos(1/(1+(htotal/Re)))
+            message(base::paste0("The horizon distance as viewed from ",p1_names[f]," is ",horizond,"m. "))
+            #check to see if horizon intersects island 2 and write 0 value if there is no intersection
+            if (sf::st_intersects(island2,sf::st_buffer(p1,horizond),sparse=FALSE)==FALSE) {
+              visible <- c(visible,0)
+              prop <- c(prop,0)
+              message(base::paste0(p2_names[t]," is not visible from ",p1_names[f],". Visible area = 0."))
+            } else {
+              #isolate fragments of island 2 that are within horizon distance
+              island2_clipped <- sf::st_intersection(island2,sf::st_buffer(p1,horizond))
+              #number of points to sample for line-of-sight calculation, based on inraster resolution
+              nsample <- round(as.numeric((sf::st_area(island2_clipped))/(reso[1]*reso[2])))
+              #generate sampling points on clipped fragment of island 2
+              testpoints <- sf::st_sample(island2_clipped,nsample,type="regular")
+              #check to see which points are visible from p1 (code written by Barry Rowlingson (spacedman))
+              visibilitymatrix <- viewTo(r=inraster,xy=sf::st_coordinates(p1),xy2=sf::st_coordinates(testpoints),h1=height)
+              #subset testpoints visible from p1
+              testpoints_visible <- testpoints[which(visibilitymatrix==TRUE)]
+              #finally, estimate visible area, based on the resolution of input raster
+              area <- as.numeric(reso[1]*reso[2]*length(testpoints_visible))
+              proportion <- as.numeric(area/sf::st_area(island2))
+              message(base::paste0(area,"m^2 of ",p2_names[t],", (",signif(proportion,3)," of the total island) is visible from ",p1_names[f]))
+              visible <- c(visible,area)
+              prop <- c(prop,proportion)
+            }
+          }
+        }
+      }
+    }
+    visiblearea[intvlname] <- visible
+    visibleprop[intvlname] <- prop
+  }
+  visiblearea$mean <- apply(visiblearea[3:ncol(visiblearea)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
+  write.csv(visiblearea,base::paste0("output/island_visiblearea.csv"))
+  visibleprop$mean <- apply(visibleprop[3:ncol(visibleprop)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
+  write.csv(visibleprop,base::paste0("output/island_visibleproportion.csv"))
 }
