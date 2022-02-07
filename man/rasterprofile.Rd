@@ -2,13 +2,13 @@
 % Please edit documentation in R/viewshed.R
 \name{rasterprofile}
 \alias{rasterprofile}
-\title{Code written by Barry Rowlingson (spacedman), posted on
+\title{Code written by Barry Rowlingson (spacedman) with modifications by David Tan, posted on
 https://stackoverflow.com/questions/21841387/r-code-that-evaluates-line-of-sight-los-between-two-lat-lon-points}
 \usage{
 rasterprofile(r, xy1, xy2)
 }
 \description{
-Code written by Barry Rowlingson (spacedman), posted on
+Code written by Barry Rowlingson (spacedman) with modifications by David Tan, posted on
 https://stackoverflow.com/questions/21841387/r-code-that-evaluates-line-of-sight-los-between-two-lat-lon-points
 }
 \keyword{internal}

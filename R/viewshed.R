@@ -1,5 +1,5 @@
 #' Calculates if point is visible from another fixed point, given local topography
-#' Code written by Barry Rowlingson (spacedman) with modifications, posted on
+#' Code written by Barry Rowlingson (spacedman) with modifications by David Tan, posted on
 #' https://stackoverflow.com/questions/21841387/r-code-that-evaluates-line-of-sight-los-between-two-lat-lon-points
 #' @keywords internal
 cansee <- function(r, xy1, xy2, h1=0, h2=0){
@@ -25,7 +25,7 @@ viewTo <- function(r, xy, xy2, h1=0, h2=0, progress="none"){
   plyr::aaply(xy2, 1, function(d){cansee(r,xy,d,h1,h2)}, .progress=progress)
 }
 
-#' Code written by Barry Rowlingson (spacedman) with modifications, posted on
+#' Code written by Barry Rowlingson (spacedman) with modifications by David Tan, posted on
 #' https://stackoverflow.com/questions/21841387/r-code-that-evaluates-line-of-sight-los-between-two-lat-lon-points
 #' @keywords internal
 rasterprofile <- function(r, xy1, xy2){

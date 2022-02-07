@@ -3,14 +3,14 @@
 \name{cansee}
 \alias{cansee}
 \title{Calculates if point is visible from another fixed point, given local topography
-Code written by Barry Rowlingson (spacedman), posted on
+Code written by Barry Rowlingson (spacedman) with modifications by David Tan, posted on
 https://stackoverflow.com/questions/21841387/r-code-that-evaluates-line-of-sight-los-between-two-lat-lon-points}
 \usage{
 cansee(r, xy1, xy2, h1 = 0, h2 = 0)
 }
 \description{
 Calculates if point is visible from another fixed point, given local topography
-Code written by Barry Rowlingson (spacedman), posted on
+Code written by Barry Rowlingson (spacedman) with modifications by David Tan, posted on
 https://stackoverflow.com/questions/21841387/r-code-that-evaluates-line-of-sight-los-between-two-lat-lon-points
 }
 \keyword{internal}
