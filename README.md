@@ -19,6 +19,8 @@ This package requires at least R v4.0.5 to function, and will automatically load
 * [gdistance](https://github.com/AgrDataSci/gdistance)
 * [lwgeom](https://r-spatial.github.io/lwgeom/)
 * [tibble](https://tibble.tidyverse.org/)
+* [ggplot2](https://ggplot2.tidyverse.org/)
+* [ggspatial](https://paleolimbot.github.io/ggspatial/)
 * stats
 
 ## Usage
