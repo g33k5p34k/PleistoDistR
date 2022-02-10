@@ -1248,12 +1248,13 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
 #' @param height The height of the observer relative to the ground level. This can be used to model the visibility of nearby islands to
 #' flying animals (e.g. birds, bats, insects). As such, if an origin point is defined on a pixel that is 100m above sea level, a height value of 100 will result in
 #' visibility estimates for an organism flying 200m above sea level (with sea level calibrated relative to the sea level of that particular interval).
+#' @param plotfigs TRUE/FALSE
 #' @return This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
 #' visible area on island 2 relative to the entire island area.
 #' @examples
 #' pleistodist_visibility(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",height=50)
 #' @export
-pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv",height=0) {
+pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv",height=0,plotfigs=FALSE) {
   intervalfile <- read.csv(intervalfile)
   points <- sf::st_read(points,fid_column_name="FID")
 
@@ -1267,6 +1268,18 @@ pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv
   #reproject input points to target projection
   points_transformed <- sf::st_transform(points,epsg)
   numintervals = max(intervalfile$Interval)
+
+  if ((nrow(points_transformed) > 5) && (plotfigs == TRUE)) {
+    figtest <- askYesNo(
+      msg=base::paste0("This function will generate a maximum of ",numintervals*as.numeric(nrow(points_transformed))^2," visibility maps. Are you sure you want to plot visibility maps? Yes/No/Cancel"))
+  }
+
+  if (is.na(figtest) == TRUE) {
+    stop()
+  } else if (figtest == FALSE) {
+    plotfigs = FALSE
+  }
+
   #check to see if the points contains a column of unique names, otherwise use FID numbers as identifiers
   if ("Name" %in% colnames(points_transformed) && anyDuplicated(points_transformed$Name) == 0) {
     p1_names <- points_transformed$Name
@@ -1364,6 +1377,20 @@ pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv
               message(base::paste0(area,"m^2 of ",p2_names[t],", (",signif(proportion,3)," of the total island) is visible from ",p1_names[f]))
               visible <- c(visible,area)
               prop <- c(prop,proportion)
+              #plot figures
+              if (plotfigs == TRUE) {
+                islandmask <- terra::vect(islandpair)
+                islandcrop <- terra::crop(inraster,islandmask)
+                mapfig <- ggplot2::ggplot()+
+                  ggspatial::layer_spatial(raster::raster(islandcrop))+
+                  ggplot2::scale_fill_viridis_c(na.value = "transparent",name="Elevation")+
+                  ggplot2::geom_sf(data=p1,size=4,shape=17,aes(colour="Observer"))+
+                  ggplot2::geom_sf(data=testpoints_visible,size=0.7,aes(colour="Visible Area"))+
+                  ggplot2::scale_colour_manual(name=NULL,values = c("Observer"="white","Visible Area"="white"),guide=guide_legend(override.aes = list(shape=c(17,16))))+
+                  ggplot2::ggtitle(base::paste0("Visibility of ",p2_names[f]," from ",p1_names[f]))+
+                  theme(legend.key = element_rect(fill = "darkgrey"))
+                ggplot2::ggsave(filename = base::paste0("output/visibilitymap_",p1_names[f],"_",p2_names[t],".png"),device="png",plot=mapfig)
+              }
             }
           }
         }
