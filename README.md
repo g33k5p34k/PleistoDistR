@@ -1,7 +1,7 @@
 # PleistoDist R
 Distance matrices between islands normalised over Pleistocene time. A complete ground-up rebuild of PleistoDist for use with R. 
 
-[Last updated: 02 Feb 2022]
+[Last updated: 07 Feb 2022]
 
 ## Introduction
 

@@ -1248,7 +1248,8 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
 #' @param height The height of the observer relative to the ground level. This can be used to model the visibility of nearby islands to
 #' flying animals (e.g. birds, bats, insects). As such, if an origin point is defined on a pixel that is 100m above sea level, a height value of 100 will result in
 #' visibility estimates for an organism flying 200m above sea level (with sea level calibrated relative to the sea level of that particular interval).
-#' @param plotfigs TRUE/FALSE
+#' @param plotfigs TRUE/FALSE option to generate island visibility maps for each pairwise island comparison. The function will generate a prompt if the number of
+#' pairwise comparisons is very high (>5 points in the points file).
 #' @return This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
 #' visible area on island 2 relative to the entire island area.
 #' @examples
