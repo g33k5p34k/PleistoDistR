@@ -399,7 +399,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv
     invector <- sf::st_read(paste("output/shapefile/interval",i,".shp",sep="")) #load interval shapefile
     inraster <- raster::raster(paste("output/raster_flat/interval",i,".tif",sep="")) #load flat raster for least cost path calculation
     inraster[is.na(inraster[])] <- 1/9999999 #convert raster NA values (water) to very low conductance values
-    trraster <- gdistance::transition(inraster,mean,directions=8) #convert inraster into a transition matrix
+    trraster <- gdistance::transition(inraster,mean,directions=16) #convert inraster into a transition matrix
     trraster_corr <- gdistance::geoCorrection(trraster,type="c",scl=FALSE) #apply geographical correction to the transition matrix (for least cost path)
     intvlname <- paste("interval",i,sep="")
 
