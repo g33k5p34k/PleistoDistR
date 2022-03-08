@@ -112,6 +112,11 @@ getintervals_sealvl <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
   if (time > max(sealvl$Time)) {
     stop("Time cutoff exceeds temporal range of sea level reconstruction")
   }
+  
+  #create outputfile
+  if (base::dir.exists("output")==FALSE) {
+    base::dir.create("output")
+  }
 
   intervals = as.numeric(intervals)
 
