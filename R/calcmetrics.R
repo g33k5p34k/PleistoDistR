@@ -853,7 +853,7 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
         islandmask <- terra::vect(invector[p1, ,op=sf::st_contains]) #use shapefile to create a mask layer
         islandtopo <- terra::mask(inraster,islandmask) #mask topo raster to isolate single island
         islandtopo_cropped <- terra::crop(islandtopo,islandmask) #crop raster extent to single island
-        islandtopo_cropped_sp <- sp::as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
+        islandtopo_cropped_sp <- as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
         isurfacearea <- sp::surfaceArea(islandtopo_cropped_sp) #calculate surface area (incorporating elevation)
         ia <- c(ia,iarea)
         ip <- c(ip,iperimeter)
@@ -1093,7 +1093,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
         islandmask <- terra::vect(invector[p1, ,op=sf::st_contains]) #use shapefile to create a mask layer
         islandtopo <- terra::mask(inraster,islandmask) #mask topo raster to isolate single island
         islandtopo_cropped <- terra::crop(islandtopo,islandmask) #crop raster extent to single island
-        islandtopo_cropped_sp <- sp::as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
+        islandtopo_cropped_sp <- as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
         isurfacearea <- sp::surfaceArea(islandtopo_cropped_sp) #calculate surface area (incorporating elevation)
         isa <- c(isa,isurfacearea)
         message(paste("Island surface area is ",isurfacearea,"m^2",sep=""))
