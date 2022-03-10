@@ -1147,19 +1147,19 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
   } else {
     #if PleistoDist doesn't detect the correct distance matrix, then call the associated function to generate the distance matrix
     message("No distance matrix file found in output folder, generating distance matrix from scratch (this might take a while...)")
-    do.call(base::paste0("pleistodist_",disttype),list(intervalfile,points,epsg))
+    do.call(base::paste0("pleistodist_",disttype),list(points,epsg,intervalfile))
     distfile <- read.csv(base::paste0("output/island_",disttype,"dist.csv"))
   }
   widthfile <- read.csv("output/island_relativewidth.csv") #read relative island widths
   if ((disttype != "euclidean") && ncol(widthfile)<=4) {
-    pleistodist_relativewidth(intervalfile,points,epsg)
+    pleistodist_relativewidth(points,epsg,intervalfile)
     widthfile <- read.csv(base::paste0("output/island_relativewidth.csv"))
     message("Regenerating relative island width file...")
   }
   if (file.exists("output/island_area.csv")==TRUE) {
     areafile <- read.csv("output/island_area.csv")
   } else {
-    pleistoshape_area(intervalfile,points,epsg)
+    pleistoshape_area(points,epsg,intervalfile)
     areafile <- read.csv("output/island_area.csv")
     message("No island area file found in output folder, generating island areas from scratch")
   }
