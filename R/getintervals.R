@@ -75,8 +75,8 @@ getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
       dplyr::filter(Time <= timeinterval*x)
     intervalfile <- intervalfile %>% tibble::add_row(
       Interval = x,
-      MinDepth =  min(intvl$Sealevel_Corrected),
-      MaxDepth = max(intvl$Sealevel_Corrected),
+      MinDepth =  max(intvl$Sealevel_Corrected),
+      MaxDepth = min(intvl$Sealevel_Corrected),
       MeanDepth = base::mean(intvl$Sealevel_Corrected),
       LowerTimeBound = min(intvl$Time),
       UpperTimeBound = max(intvl$Time),
