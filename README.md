@@ -1,8 +1,6 @@
 # PleistoDist R
 Distance matrices between islands normalised over Pleistocene time. A complete ground-up rebuild of PleistoDist for use with R. 
 
-[Last updated: 07 Feb 2022]
-
 ## Introduction
 
 PleistoDist is a tool for visualising and quantifying the effects of Pleistocene-era sea level change on islands over time. This tool comes packaged as series of R functions, for generating maps of island extents for different Pleistocene-era sea levels, and calculating various inter-island and intra island distance and geomorphological metrics over time. This R package is a complete ground-up rebuild of the original PleistoDist, which was written as an ArcMap plugin.
