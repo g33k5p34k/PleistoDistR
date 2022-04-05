@@ -34,9 +34,9 @@ library(PleistoDist)
 
 ## Vignettes
 
-[Vignette 1: Calculating inter-island distances](https://davidbirdtan.com/pleistodist/vignette1/)
-[Vignette 2: Species-area relationships](https://davidbirdtan.com/pleistodist/vignette2/)
-[Vignette 3: Calculating net inter-island migration](https://davidbirdtan.com/pleistodist/vignette3/)
+* [Vignette 1: Calculating inter-island distances](https://davidbirdtan.com/pleistodist/vignette1/)
+* [Vignette 2: Species-area relationships](https://davidbirdtan.com/pleistodist/vignette2/)
+* [Vignette 3: Calculating net inter-island migration](https://davidbirdtan.com/pleistodist/vignette3/)
 
 ### Inputs
 
