@@ -32,6 +32,12 @@ devtools::install_github("g33k5p34k/PleistoDistR")
 library(PleistoDist)
 ```
 
+## Vignettes
+
+[Vignette 1: Calculating inter-island distances](https://davidbirdtan.com/pleistodist/vignette1/)
+[Vignette 2: Species-area relationships](https://davidbirdtan.com/pleistodist/vignette2/)
+[Vignette 3: Calculating net inter-island migration](https://davidbirdtan.com/pleistodist/vignette3/)
+
 ### Inputs
 
 You will need the following inputs in order to run PleistoDist:
