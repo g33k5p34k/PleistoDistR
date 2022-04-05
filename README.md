@@ -23,6 +23,12 @@ This package requires at least R v4.0.5 to function, and will automatically load
 * [ggspatial](https://paleolimbot.github.io/ggspatial/)
 * stats
 
+## Vignettes
+
+* [Vignette 1: Calculating inter-island distances](https://davidbirdtan.com/pleistodist/vignette1/)
+* [Vignette 2: Species-area relationships](https://davidbirdtan.com/pleistodist/vignette2/)
+* [Vignette 3: Calculating net inter-island migration](https://davidbirdtan.com/pleistodist/vignette3/)
+
 ## Usage
 
 To install and load this package in R, use the following commands: 
@@ -31,12 +37,6 @@ To install and load this package in R, use the following commands:
 devtools::install_github("g33k5p34k/PleistoDistR")
 library(PleistoDist)
 ```
-
-## Vignettes
-
-* [Vignette 1: Calculating inter-island distances](https://davidbirdtan.com/pleistodist/vignette1/)
-* [Vignette 2: Species-area relationships](https://davidbirdtan.com/pleistodist/vignette2/)
-* [Vignette 3: Calculating net inter-island migration](https://davidbirdtan.com/pleistodist/vignette3/)
 
 ### Inputs
 
