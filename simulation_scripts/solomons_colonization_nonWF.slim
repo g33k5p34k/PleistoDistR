@@ -1,0 +1,162 @@
+// By: Ethan Gyllenhaal (egyllenhaal@unm.edu)
+// Last updated: 12Apr2022
+//
+// Script for running spatially explicit non-Wright-Fisher SLiM simulations on PleistoDist output, changing over time
+// No output, made for viewing colonization patterns in the SLiM GUI
+// Has both short-distance and long-distance dispersal, the latter of which has an overwater component
+// Overwater dispersal has an individual move in a given direction and distance
+//// If it crosses water, it either "lands" when it "sees" shore with a dispersal check, or fails
+
+initialize() {
+	// set up basic SLiM parameters, only neutral mutations
+	initializeSLiMModelType("nonWF");
+	defineConstant("K", 10); // carrying capacity density
+	defineConstant("S", 20.0); // spatial competition kernel width
+	initializeSLiMOptions(dimensionality="xy", periodicity="xy"); //2D periodic barrier
+	initializeMutationRate(1e-7);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	m1.convertToSubstitution = T;
+	initializeGenomicElementType("g1", m1, 1.0);
+	initializeGenomicElement(g1, 0, 99999);
+	initializeRecombinationRate(1e-8);
+	
+	// constants for long distance dispersal
+	defineConstant("step", 5); // granularity of dispersal check
+	defineConstant("mean", 100); // mean long distance dispersal distances	
+	
+	// spatial competition
+	initializeInteractionType(1, "xy", reciprocal=T, maxDistance=S*3);
+	i1.setInteractionFunction("n", 500.0, S);
+
+	// spatial mate choice
+	initializeInteractionType(2, "xy", reciprocal=T, maxDistance=20.0);
+	
+	// generation length, interval granularity, and generations per interval
+	// for changing the map
+	defineConstant("genLen", 5); // generation length in years
+	defineConstant("intStep", 1000); //interval step in years
+	defineConstant("genStep", floor(intStep/genLen)); //generations per interval
+	
+	// number of generations, starting interval
+	defineConstant("numGens", 5000); //number of generations, must match the last late() call
+	defineConstant("startInt", floor(numGens/genStep)); //starting generation
+}
+
+
+1 early() {
+	// add colonists
+	sim.addSubpop("p1", 50);
+
+	// set spatial bounds and load map image
+	p1.setSpatialBounds(c(0.0, 0.0, 2038, 1551));
+	mapImage = Image("/path/to/solo_slim/solo_intervals/interval"+startInt+".png");
+	p1.defineSpatialMap("islands", "xy", floor(10*(mapImage.floatK)),
+		valueRange=c(0.0, 1.0), colors=c("#0000CC", "#55FF22"));
+	
+	// start near a specific map location on Bougainville
+	for (ind in p1.individuals) {
+		do{
+			ind.x = rnorm(1, 120.0, 50.0);
+			ind.y = rnorm(1, 1300.0, 50.0);
+		}
+		while((p1.spatialMapValue("islands", ind.spatialPosition) == 0.0) | (!p1.pointInBounds(ind.spatialPosition)));
+	}
+}
+
+1: early() {
+
+	// evaluate competition
+	i1.evaluate();
+	inds = sim.subpopulations.individuals;
+	competition = i1.totalOfNeighborStrengths(inds);
+	
+	// changing competition to account for K
+	competition = (competition + 1) / (2 * PI * S^2); // +1 includes focal indiv, second rescales by density of comp. kernel
+	inds.fitnessScaling = K / competition * asInteger(inds.age < 5); // use local K instead of global
+	
+}
+
+1: late() {
+	// evaluate mate choice in late
+	i2.evaluate();
+	
+	// change map per interval
+	if((sim.generation - 1) % genStep == 0 & sim.generation>1) {
+		intNum = floor(((numGens-(sim.generation-1))/genStep))-1;
+		mapImage = Image("/mnt/d/Documents/Projects/IslandBioGeneflow/PleistoDist/solo_slim/solo_intervals/interval"+intNum+".png");
+		p1.defineSpatialMap("islands", "xy", floor(10*(mapImage.floatK)),
+			valueRange=c(0.0, 1.0), colors=c("#0000CC", "#55FF22"));
+	}
+}
+
+reproduction() {
+	mates = i2.nearestNeighbors(individual, 3); // find 3 nearest neighbors within mating kernel
+	if (!mates.size())
+		return; // if no possible mates, fail		
+	mate = sample(mates, 1);
+	
+	for (i in seqLen(rpois(1,0.5))) { // make children for i in random poisson value, mean of X, lower = more overlap
+		offspring = subpop.addCrossed(individual, mate);
+	}
+
+}
+
+modifyChild() {
+	// fail if individual is in water
+	if(p1.spatialMapValue("islands", parent1.spatialPosition) == 0.0){
+		return F;
+	}
+	// short distance dispersal most of the time
+	else if(runif(1,0,1) > 0.01){
+		// limit number of attempts
+		attempts = 0;
+		// avoid having an offspring in the water for short distance dispersal
+		do{
+			pos = parent1.spatialPosition + rnorm(2, 0, 5.0);
+			attempts = attempts + 1;
+		}
+		while((p1.spatialMapValue("islands", pos) == 0.0| !p1.pointInBounds(pos)) & attempts < 5);
+		// fail if child is in water
+		if(p1.spatialMapValue("islands", pos) == 0.0 | !p1.pointInBounds(pos)) {		
+			return F;
+		}		
+		// succeed if child is on land
+		else{
+			child.setSpatialPosition(pos);
+			return T;
+		}
+	}
+	// do long distance dispersal otherwise
+	else{
+		distance = rexp(1,mean); // distance traveled
+		degree = runif(1,0,2*PI); // degree of travel in radians
+		crossed_water = F;
+		pos = parent1.spatialPosition;
+		// start checking each distance step to see if land is reached
+		for(i in 0:floor(distance/step)){
+			pos = pos + c(sin(degree)*step, cos(degree)*step);
+			if(crossed_water & (p1.spatialMapValue("islands", pos) != 0.0 & p1.pointInBounds(pos))){
+				child.setSpatialPosition(pos);
+				return T;
+			}
+			// if over water, set boolean check to true
+			else{
+				if(p1.spatialMapValue("islands", pos) == 0.0){
+					crossed_water = T;
+				}
+			}
+		}
+		// final position for remainder
+		remainder = (distance/step) - floor(distance/step);
+		pos = pos + c(sin(degree)*remainder, cos(degree)*remainder);
+	}
+	
+	// prevent dispersal into water
+	if (p1.spatialMapValue("islands", pos) == 0.0 | !p1.pointInBounds(pos))
+		return F;
+	
+	child.setSpatialPosition(pos);
+	return T;
+}
+// filler for end of simulation
+5000 late() { sim.outputFixedMutations(); }
