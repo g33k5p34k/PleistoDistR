@@ -1,0 +1,236 @@
+// By: Ethan Gyllenhaal (egyllenhaal@unm.edu)
+// Last updated: 12Apr2022
+//
+// Script for running spatially explicit SLiM simulations on PleistoDist output, changing over time
+// Calculates FST and nucleotide diversity for populations delimited by spatial coordinates
+// Has both short-distance and long-distance dispersal, the latter of which has an overwater component
+// Overwater dispersal has an individual move in a given direction and distance
+//// If it crosses water, it either "lands" when it "sees" shore with a dispersal check, or fails
+
+initialize() {
+	// set up basic SLiM parameters, only neutral mutations
+	initializeSLiMOptions(dimensionality="xy");
+	initializeMutationRate(1e-7);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeGenomicElementType("g1", m1, 1.0);
+	initializeGenomicElement(g1, 0, 99999);
+	initializeRecombinationRate(1e-8);
+	
+	// constants for long distance dispersal
+	defineConstant("step", 3); // granularity of dispersal check
+	defineConstant("mean", mean_dispersal); // mean long distance dispersal distance
+	
+	// spatial competition
+	initializeInteractionType(1, "xy", reciprocal=T, maxDistance=10.0);
+	i1.setInteractionFunction("n", 300.0, 5.0);
+	
+	// spatial mate choice
+	initializeInteractionType(2, "xy", reciprocal=T, maxDistance=30.0);
+	
+	// generation length, interval granularity, and generations per interval
+	// for changing the map
+	defineConstant("genLen", 2); // generation length in years
+	defineConstant("intStep", 1000); //interval step in years
+	defineConstant("genStep", floor(intStep/genLen)); //generations per interval
+	
+	// number of generations, starting interval
+	defineConstant("numGens", 50000); //number of generations, must match the last late() call
+	defineConstant("startInt", floor(numGens/genStep)); //starting generation
+	
+}
+
+// method for calculating FST for two input arrays of individuals
+function (float)doFST(object pop1, object pop2){
+	// only run if both populations have individuals
+	if(pop1.length() > 0 & pop2.length() > 0){
+			 fst_val = calcFST(pop1,pop2); //uses built in SLiM function
+			 // if FST is null or infinite, return 0
+			 if(isNULL(fst_val)){
+				return 0.0;
+			 }
+			 else if(isInfinite(fst_val)){
+				return 0.0;
+			 }
+			 else{
+				return fst_val;
+			 }
+	}
+	else{
+		return 0.0;
+	}	
+}
+
+// method for calculating nucleotide diversity for an input array of individuals 
+function (float)doPI(object pop1){
+	// only run if the popualtion has individuals
+	if(pop1.length() > 0){
+		return calcHeterozygosity(pop1); //uses built in SLiM function
+	}
+	else{
+		return -1.0;
+	}	
+}
+
+// calculate pairwise FST for everything, for later averaging
+function (float)arrayFST(object pop){
+	 indv = pop.individuals;
+	 savaii = indv[(indv.x < 726) & (indv.x > 380) & (indv.y < 1080) & (indv.y > 880)].genomes;
+	 upolu = indv[(indv.x < 1090) & (indv.x > 754) & (indv.y < 930) & (indv.y > 740)].genomes;
+	 tutuila = indv[(indv.x < 1490) & (indv.x > 1320) & (indv.y < 678) & (indv.y > 598)].genomes;
+	 ofuolo = indv[(indv.x < 1950) & (indv.x > 1870) & (indv.y < 730) & (indv.y > 680)].genomes;
+	 tau = indv[(indv.x < 2050) & (indv.x > 1955) & (indv.y < 680) & (indv.y > 640)].genomes;
+
+	 return c(doFST(savaii, upolu), doFST(savaii, tutuila), doFST(savaii, ofuolo), doFST(savaii, tau),
+                doFST(upolu, savaii), doFST(upolu, tutuila), doFST(upolu, ofuolo), doFST(upolu, tau),
+                doFST(tutuila, savaii), doFST(tutuila, upolu), doFST(tutuila, ofuolo), doFST(tutuila, tau),
+                doFST(ofuolo, savaii), doFST(ofuolo, upolu), doFST(ofuolo, tutuila), doFST(ofuolo, tau),
+                doFST(tau, savaii), doFST(tau, upolu), doFST(tau, tutuila), doFST(tau, ofuolo));
+}
+
+// calculate nucleotide diversity for everything
+function (float)arrayPI(object pop){
+	 indv = pop.individuals;
+	 savaii = indv[(indv.x < 726) & (indv.x > 380) & (indv.y < 1080) & (indv.y > 880)].genomes;
+	 upolu = indv[(indv.x < 1090) & (indv.x > 754) & (indv.y < 930) & (indv.y > 740)].genomes;
+	 tutuila = indv[(indv.x < 1490) & (indv.x > 1320) & (indv.y < 678) & (indv.y > 598)].genomes;
+	 ofuolo = indv[(indv.x < 1950) & (indv.x > 1870) & (indv.y < 730) & (indv.y > 680)].genomes;
+	 tau = indv[(indv.x < 2050) & (indv.x > 1955) & (indv.y < 680) & (indv.y > 640)].genomes;
+
+	 return c(doPI(savaii), doPI(upolu), doPI(tutuila), doPI(ofuolo), doPI(tau));
+}
+
+1 late() {
+	sim.addSubpop("p1", 20000);
+	
+	// set globals for arrays to average later and count to average over
+	sim.setValue("fst_arr", array(rep(0,20), c(1,20)));
+	sim.setValue("pi_arr", array(rep(0,5), c(1,5)));
+	sim.setValue("count", 0);
+
+	// set spatial bounds and load map image
+	p1.setSpatialBounds(c(0.0, 0.0, 2966, 1608));
+	mapImage = Image("/path/to/samoa_intervals/interval"+startInt+".png");
+	p1.defineSpatialMap("islands", "xy", floor(mapImage.floatK),
+		valueRange=c(0.0, 1.0), colors=c("#0000CC", "#55FF22"));
+	
+	// start near a specific map location
+	for (ind in p1.individuals) {
+		do{
+			ind.x = runif(1, 0, 2966);
+			ind.y = runif(1, 0, 1608);
+		}
+		// avoid individuals being placed out of bounds or in the water
+		while(p1.spatialMapValue("islands", ind.spatialPosition) == 0.0 | !p1.pointInBounds(ind.spatialPosition));
+	}
+}
+1: late() {
+
+	// if at an interval change, swap the map
+	if((sim.generation - 1) % genStep == 0 & sim.generation>1) {
+		intNum = floor(((numGens-(sim.generation-1))/genStep))-1;
+		mapImage = Image("/path/to/samoa_intervals/interval"+intNum+".png");
+		p1.defineSpatialMap("islands", "xy", floor(10*(mapImage.floatK)),
+			valueRange=c(0.0, 1.0), colors=c("#0000CC", "#55FF22"));
+	}
+	
+	// evaluate competition, calculate fitness cost
+	i1.evaluate();
+	inds = sim.subpopulations.individuals;
+	competition = i1.totalOfNeighborStrengths(inds);
+	// if fitness would be less than 0, set to 0
+	inds.fitnessScaling = (1.5 - competition / size(inds))*asInteger((1.5 - competition / size(inds))>0);
+	
+	// evaluate mate choice
+	i2.evaluate();
+
+	// if in last 10 gens, start adding to arrays for averaging
+	if(sim.generation > numGens-10){
+			  sim.setValue("fst_arr", sim.getValue("fst_arr") + arrayFST(p1));
+			  sim.setValue("pi_arr", sim.getValue("pi_arr") + arrayPI(p1));
+			  sim.setValue("count", sim.getValue("count") + 1);
+	}
+}
+1: mateChoice() {
+	// nearest-neighbor spatial mate choice
+	neighbors = i2.nearestNeighbors(individual, 3);
+	return (size(neighbors) ? sample(neighbors, 1) else float(0));
+}
+modifyChild() {
+
+	// if parent1 is in the water, fail
+	if(p1.spatialMapValue("islands", parent1.spatialPosition) == 0.0){
+	    return F;
+	}
+	
+	// short distance dispersal most of the time
+	if(runif(1,0,1) > 0.002){
+		attempts=0;
+		// avoid having an offspring in the water for short distance dispersal
+		do{
+			pos = parent1.spatialPosition + rnorm(2, 0, 10.0);
+		}
+		while((p1.spatialMapValue("islands", pos) == 0.0 | !p1.pointInBounds(pos)) & attempts < 5);
+		child.setSpatialPosition(pos);
+		return T;
+	}
+	
+	// otherwise do long distance dispersal
+	else{
+		distance = rexp(1,mean); // distance traveled
+		degree = runif(1,0,2*PI); // degree of travel in radians
+		crossed_water = F;
+		pos = parent1.spatialPosition;
+		// start checking each distance step to see if land is reached
+		for(i in 0:floor(distance/step)){
+			pos = pos + c(sin(degree)*step, cos(degree)*step);
+			// succeed if water is crossed
+			if(crossed_water & (p1.spatialMapValue("islands", pos) != 0.0) & p1.pointInBounds(pos)){
+				child.setSpatialPosition(pos);
+				return T;
+			}
+			// if over water, set boolean check to true
+			else{
+				if(p1.spatialMapValue("islands", pos) == 0.0){
+					crossed_water = T;
+				}
+			}
+		}
+		// final position for remainder
+		remainder = (distance/step) - floor(distance/step);
+		pos = pos + c(sin(degree)*remainder, cos(degree)*remainder);
+	}
+	
+	// prevent dispersal into water
+	if (p1.spatialMapValue("islands", pos) == 0.0 | !p1.pointInBounds(pos))
+		return F;
+	
+	child.setSpatialPosition(pos);
+	return T;
+}
+
+50000 late() {
+	// assign individuals to island, as in do* methods
+    indv = p1.individuals;
+    savaii = indv[(indv.x < 726) & (indv.x > 380) & (indv.y < 1080) & (indv.y > 880)].genomes;
+    upolu = indv[(indv.x < 1090) & (indv.x > 754) & (indv.y < 930) & (indv.y > 740)].genomes;
+    tutuila = indv[(indv.x < 1490) & (indv.x > 1320) & (indv.y < 678) & (indv.y > 598)].genomes;
+    ofuolo = indv[(indv.x < 1950) & (indv.x > 1870) & (indv.y < 730) & (indv.y > 680)].genomes;
+    tau = indv[(indv.x < 2050) & (indv.x > 1955) & (indv.y < 680) & (indv.y > 640)].genomes;
+	
+	// make outfile paths
+	size_outfile = paste("/path/to/output/samoa_dynamic_WF_size_disp", mean_dispersal, ".txt", sep="");
+	pi_outfile = paste("/path/to/output/samoa_dynamic_WF_PI_disp", mean_dispersal, ".txt", sep="");
+	fst_outfile = paste("/path/to/output/samoa_dynamic_WF_FST_disp", mean_dispersal, ".txt", sep="");
+	
+	// output population sizes
+	size_values = paste(savaii.length()/2, upolu.length()/2, tutuila.length()/2, ofuolo.length()/2, tau.length()/2);
+	writeFile(size_outfile, size_values, append=T);
+	
+	// output averages for nucleotide diversity
+	pi_values = paste(sim.getValue("pi_arr")/sim.getValue("count"), sep="\t");
+	writeFile(pi_outfile, pi_values, append=T);
+	
+	// output averages for FST
+	fst_values = paste(sim.getValue("fst_arr")/sim.getValue("count"), sep="\t");
+	writeFile(fst_outfile, fst_values, append=T);
+}
