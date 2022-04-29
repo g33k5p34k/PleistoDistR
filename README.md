@@ -8,12 +8,12 @@ PleistoDist is a tool for visualising and quantifying the effects of Pleistocene
 ## Requirements
 
 This package requires at least R v4.0.5 to function, and will automatically load the following dependencies:
-* [plyr](https://cran.r-project.org/web/packages/plyr/index.html)
+* [plyr](https://CRAN.R-project.org/package=plyr)
 * [dplyr](https://dplyr.tidyverse.org/). 
 * [sf](https://r-spatial.github.io/sf/)
 * [terra](https://github.com/rspatial/terra)
 * [sp](https://edzer.github.io/sp/)
-* [raster](https://cran.r-project.org/web/packages/raster/index.html)
+* [raster](https://CRAN.R-project.org/package=raster)
 * [gdistance](https://github.com/AgrDataSci/gdistance)
 * [lwgeom](https://r-spatial.github.io/lwgeom/)
 * [tibble](https://tibble.tidyverse.org/)
