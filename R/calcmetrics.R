@@ -48,7 +48,7 @@ pleistodist_euclidean <- function(points,epsg) {
   #blankmatrix <- blankmatrix %>%
     #ilter(Var1>=Var2)
   euclideandist$interval0 <- as.numeric(blankmatrix$interval0)
-  write.csv(euclideandist,"output/island_euclideandist.csv")
+  utils::write.csv(euclideandist,"output/island_euclideandist.csv")
 }
 
 #' Calculate inter-island centroid-to-centroid distance over time
@@ -76,7 +76,7 @@ pleistodist_euclidean <- function(points,epsg) {
 #' one column per interval.
 #' @export
 pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile = read.csv(intervalfile)
+  intervalfile = utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -156,7 +156,7 @@ pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv"
             island2_centroid <- sf::st_centroid(island2)
             centroidline <- sf::st_linestring(rbind(sf::st_coordinates(island1_centroid),sf::st_coordinates(island2_centroid)))
 
-            m = -1/(line(centroidline)$coefficients[2])
+            m = -1/(stats::line(centroidline)$coefficients[2])
             c = sf::st_coordinates(island1_centroid)[,2]-(m*sf::st_coordinates(island1_centroid)[,1])
 
             #calculate 2 points on widthline at edges of bounding box
@@ -186,8 +186,8 @@ pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv"
   }
   centroiddist$mean <- apply(centroiddist[3:ncol(centroiddist)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   relativeislandwidth$mean <- apply(relativeislandwidth[3:ncol(relativeislandwidth)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(centroiddist,"output/island_centroiddist.csv")
-  write.csv(relativeislandwidth,"output/island_relativewidth.csv")
+  utils::write.csv(centroiddist,"output/island_centroiddist.csv")
+  utils::write.csv(relativeislandwidth,"output/island_relativewidth.csv")
 }
 
 #' Calculate least inter-island shore-to-shore distance over time
@@ -215,7 +215,7 @@ pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv"
 #' one column per interval.
 #' @export
 pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile = read.csv(intervalfile)
+  intervalfile = utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -289,7 +289,7 @@ pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.cs
             island2_centroid <- sf::st_centroid(island2)
             centroidline <- sf::st_linestring(rbind(sf::st_coordinates(island1_centroid),sf::st_coordinates(island2_centroid)))
 
-            m = -1/(line(centroidline)$coefficients[2])
+            m = -1/(stats::line(centroidline)$coefficients[2])
             c = sf::st_coordinates(island1_centroid)[,2]-(m*sf::st_coordinates(island1_centroid)[,1])
 
             #calculate 2 points on widthline at edges of bounding box
@@ -317,10 +317,10 @@ pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.cs
     shoredist[intvlname] <- shored
     relativeislandwidth[intvlname] <- iwidth
   }
-  shoredist$mean <- apply(shoredist[3:ncol(shoredist)],1,weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
+  shoredist$mean <- apply(shoredist[3:ncol(shoredist)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   relativeislandwidth$mean <- apply(relativeislandwidth[3:ncol(relativeislandwidth)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(shoredist,"output/island_leastshoredist.csv")
-  write.csv(relativeislandwidth,"output/island_relativewidth.csv")
+  utils::write.csv(shoredist,"output/island_leastshoredist.csv")
+  utils::write.csv(relativeislandwidth,"output/island_relativewidth.csv")
 }
 
 #' Calculate least-cost distance between points over time
@@ -348,7 +348,7 @@ pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.cs
 #' one column per interval.
 #' @export
 pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile = read.csv(intervalfile)
+  intervalfile = utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -428,7 +428,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv
             island2_centroid <- sf::st_centroid(island2)
             centroidline <- sf::st_linestring(rbind(sf::st_coordinates(island1_centroid),sf::st_coordinates(island2_centroid)))
 
-            m = -1/(line(centroidline)$coefficients[2])
+            m = -1/(stats::line(centroidline)$coefficients[2])
             c = sf::st_coordinates(island1_centroid)[,2]-(m*sf::st_coordinates(island1_centroid)[,1])
 
             #calculate 2 points on widthline at edges of bounding box
@@ -457,8 +457,8 @@ pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv
   }
   leastcostdist$mean <- apply(leastcostdist[3:ncol(leastcostdist)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   relativeislandwidth$mean <- apply(relativeislandwidth[3:ncol(relativeislandwidth)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(leastcostdist,"output/island_leastcostdist.csv")
-  write.csv(relativeislandwidth,"output/island_relativewidth.csv")
+  utils::write.csv(leastcostdist,"output/island_leastcostdist.csv")
+  utils::write.csv(relativeislandwidth,"output/island_relativewidth.csv")
 }
 
 #' Calculate inter-island mean shore-to-shore distance over time
@@ -493,7 +493,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
 #' @export
 pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv",maxsamp=1000) {
-  intervalfile = read.csv(intervalfile)
+  intervalfile = utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -570,7 +570,7 @@ pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv
             island2_centroid <- sf::st_centroid(island2)
             centroidline <- sf::st_linestring(rbind(sf::st_coordinates(island1_centroid),sf::st_coordinates(island2_centroid)))
 
-            m = -1/(line(centroidline)$coefficients[2])
+            m = -1/(stats::line(centroidline)$coefficients[2])
             c = sf::st_coordinates(island1_centroid)[,2]-(m*sf::st_coordinates(island1_centroid)[,1])
 
             #calculate 2 points on widthline at edges of bounding box
@@ -624,8 +624,8 @@ pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv
   }
   meanshoredist$mean <- apply(meanshoredist[3:ncol(meanshoredist)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   relativeislandwidth$mean <- apply(relativeislandwidth[3:ncol(relativeislandwidth)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(meanshoredist,"output/island_meanshoredist.csv")
-  write.csv(relativeislandwidth,"output/island_relativewidth.csv")
+  utils::write.csv(meanshoredist,"output/island_meanshoredist.csv")
+  utils::write.csv(relativeislandwidth,"output/island_relativewidth.csv")
 }
 
 #' Calculate width of islands relative to each other
@@ -652,7 +652,7 @@ pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
 #' @export
 pleistodist_relativewidth <- function (points, epsg,intervalfile="output/intervals.csv") {
-  intervalfile = read.csv(intervalfile)
+  intervalfile = utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -721,7 +721,7 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile="output/interva
             island2_centroid <- sf::st_centroid(island2)
             centroidline <- sf::st_linestring(rbind(sf::st_coordinates(island1_centroid),sf::st_coordinates(island2_centroid)))
 
-            m = -1/(line(centroidline)$coefficients[2])
+            m = -1/(stats::line(centroidline)$coefficients[2])
             c = sf::st_coordinates(island1_centroid)[,2]-(m*sf::st_coordinates(island1_centroid)[,1])
 
             #calculate 2 points on widthline at edges of bounding box
@@ -745,7 +745,7 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile="output/interva
     relativeislandwidth[intvlname] <- iwidth
   }
   relativeislandwidth$mean <- apply(relativeislandwidth[3:ncol(relativeislandwidth)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(relativeislandwidth,"output/island_relativewidth.csv")
+  utils::write.csv(relativeislandwidth,"output/island_relativewidth.csv")
 }
 
 #' Calculate area, perimeter and surface area of islands over time
@@ -771,7 +771,7 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile="output/interva
 #' @return This function outputs three matrices of island shape estimates in long format, with one column per interval in each matrix.
 #' @export
 pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile <- read.csv(intervalfile)
+  intervalfile <- utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -809,7 +809,7 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
   for (i in 0:numintervals) {
     #load interval shapefile
     invector <- sf::st_read(paste("output/shapefile/interval",i,".shp",sep=""))
-    inraster <- terra:rast(paste("output/raster_topo/interval",i,".tif",sep=""))-intervalfile$MeanDepth[i+1]
+    inraster <- terra::rast(paste("output/raster_topo/interval",i,".tif",sep=""))-intervalfile$MeanDepth[i+1]
     intvlname <- paste("interval",i,sep="")
     ia <- c() #create blank list for temporarily storing area values (before offloading into the main dataframe)
     ip <- c() #create blank list for temporarily storing perimeter values (before offloading into the main dataframe)
@@ -851,9 +851,9 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
   islandarea$mean <- apply(islandarea[2:ncol(islandarea)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   islandperimeter$mean <- apply(islandperimeter[2:ncol(islandperimeter)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
   islandsurfacearea$mean <- apply(islandsurfacearea[2:ncol(islandsurfacearea)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(islandarea,"output/island_area.csv")
-  write.csv(islandperimeter,"output/island_perimeter.csv")
-  write.csv(islandsurfacearea,"output/island_surfacearea.csv")
+  utils::write.csv(islandarea,"output/island_area.csv")
+  utils::write.csv(islandperimeter,"output/island_perimeter.csv")
+  utils::write.csv(islandsurfacearea,"output/island_surfacearea.csv")
 }
 
 #' Calculate island perimeter over time
@@ -876,7 +876,7 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
 #' @return This function outputs a matrix of island perimeter estimates in long format, with one column per interval.
 #' @export
 pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile <- read.csv(intervalfile)
+  intervalfile <- utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -925,7 +925,7 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.c
     islandperimeter[intvlname] <- ip
   }
   islandperimeter$mean <- apply(islandperimeter[2:ncol(islandperimeter)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(islandperimeter,"output/island_perimeter.csv")
+  utils::write.csv(islandperimeter,"output/island_perimeter.csv")
 }
 
 #' Calculate island area over time
@@ -948,7 +948,7 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.c
 #' @return This function outputs a matrix of 2D island area estimates in long format, with one column per interval.
 #' @export
 pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile <- read.csv(intervalfile)
+  intervalfile <- utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -998,7 +998,7 @@ pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") 
     islandarea[intvlname] <- ia
   }
   islandarea$mean <- apply(islandarea[2:ncol(islandarea)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(islandarea,"output/island_area.csv")
+  utils::write.csv(islandarea,"output/island_area.csv")
 }
 
 #' Calculate island surface area over time
@@ -1021,7 +1021,7 @@ pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") 
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
 #' @export
 pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals.csv") {
-  intervalfile <- read.csv(intervalfile)
+  intervalfile <- utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -1077,7 +1077,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
     islandsurfacearea[intvlname] <- isa
   }
   islandsurfacearea$mean <- apply(islandsurfacearea[2:ncol(islandsurfacearea)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(islandsurfacearea,"output/island_surfacearea.csv")
+  utils::write.csv(islandsurfacearea,"output/island_surfacearea.csv")
 }
 
 #' Estimate net inter-island migration over time
@@ -1106,6 +1106,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
+#' @importFrom dplyr %>%
 #' @export
 pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/intervals.csv") {
   #check to make sure a valid disttype is supplied
@@ -1114,29 +1115,29 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
   }
   #parse disttype input, reading the specified distance matrix file from the output folder
   if (file.exists(base::paste0("output/island_",disttype,"dist.csv"))==TRUE) {
-    distfile = read.csv(base::paste0("output/island_",disttype,"dist.csv"))
+    distfile = utils::read.csv(base::paste0("output/island_",disttype,"dist.csv"))
     message(base::paste0("Reading distance matrix: output/island_",disttype,"dist.csv"))
   } else {
     #if PleistoDist doesn't detect the correct distance matrix, then call the associated function to generate the distance matrix
     message("No distance matrix file found in output folder, generating distance matrix from scratch (this might take a while...)")
     do.call(base::paste0("pleistodist_",disttype),list(points,epsg,intervalfile))
-    distfile <- read.csv(base::paste0("output/island_",disttype,"dist.csv"))
+    distfile <- utils::read.csv(base::paste0("output/island_",disttype,"dist.csv"))
   }
-  widthfile <- read.csv("output/island_relativewidth.csv") #read relative island widths
+  widthfile <- utils::read.csv("output/island_relativewidth.csv") #read relative island widths
   if ((disttype != "euclidean") && ncol(widthfile)<=4) {
     pleistodist_relativewidth(points,epsg,intervalfile)
-    widthfile <- read.csv(base::paste0("output/island_relativewidth.csv"))
+    widthfile <- utils::read.csv(base::paste0("output/island_relativewidth.csv"))
     message("Regenerating relative island width file...")
   }
   if (file.exists("output/island_area.csv")==TRUE) {
-    areafile <- read.csv("output/island_area.csv")
+    areafile <- utils::read.csv("output/island_area.csv")
   } else {
     pleistoshape_area(points,epsg,intervalfile)
-    areafile <- read.csv("output/island_area.csv")
+    areafile <- utils::read.csv("output/island_area.csv")
     message("No island area file found in output folder, generating island areas from scratch")
   }
 
-  intervalfile <- read.csv(intervalfile)
+  intervalfile <- utils::read.csv(intervalfile)
   points = sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -1169,18 +1170,18 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
     message(base::paste0("Calculating relative migration for ",intvlname))
     for (f in 1:nrow(points_transformed)) {
       for (t in 1:nrow(points_transformed)) {
-        d12 <- distfile %>% dplyr::filter(Island1==p1_names[f],Island2==p2_names[t]) %>% dplyr::select(all_of(intvlname)) %>% as.numeric()
-        d21 <- distfile %>% dplyr::filter(Island1==p2_names[t],Island2==p1_names[f]) %>% dplyr::select(all_of(intvlname)) %>% as.numeric()
+        d12 <- distfile %>% dplyr::filter(Island1==p1_names[f],Island2==p2_names[t]) %>% dplyr::select(dplyr::all_of(intvlname)) %>% as.numeric()
+        d21 <- distfile %>% dplyr::filter(Island1==p2_names[t],Island2==p1_names[f]) %>% dplyr::select(dplyr::all_of(intvlname)) %>% as.numeric()
         d = (d12+d21)/2
         if (is.na(d12)==TRUE) {
           mr <- c(mr,NA)
         } else if (d12 == 0) {
           mr <- c(mr,1)
         } else {
-          A1 <- areafile %>% dplyr::filter(Island==p1_names[f]) %>% dplyr::select(all_of(intvlname)) %>% as.numeric()
-          A2 <- areafile %>% dplyr::filter(Island==p2_names[t]) %>% dplyr::select(all_of(intvlname)) %>% as.numeric()
-          t1 <- widthfile %>% dplyr::filter(Island1==p1_names[f],Island2==p2_names[t]) %>% dplyr::select(all_of(intvlname)) %>% as.numeric()
-          t2 <- widthfile %>% dplyr::filter(Island1==p2_names[t],Island2==p1_names[f]) %>% dplyr::select(all_of(intvlname)) %>% as.numeric()
+          A1 <- areafile %>% dplyr::filter(Island==p1_names[f]) %>% dplyr::select(dplyr::all_of(intvlname)) %>% as.numeric()
+          A2 <- areafile %>% dplyr::filter(Island==p2_names[t]) %>% dplyr::select(dplyr::all_of(intvlname)) %>% as.numeric()
+          t1 <- widthfile %>% dplyr::filter(Island1==p1_names[f],Island2==p2_names[t]) %>% dplyr::select(dplyr::all_of(intvlname)) %>% as.numeric()
+          t2 <- widthfile %>% dplyr::filter(Island1==p2_names[t],Island2==p1_names[f]) %>% dplyr::select(dplyr::all_of(intvlname)) %>% as.numeric()
           migratio <- (atan(t2/(2*d))*A1)/(atan(t1/(2*d))*A2)
           mr <- c(mr,migratio)
         }
@@ -1189,7 +1190,7 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
     relmig[intvlname] <- mr
   }
   relmig$mean <- apply(relmig[3:ncol(relmig)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(relmig,base::paste0("output/island_netmigration_",disttype,".csv"))
+  utils::write.csv(relmig,base::paste0("output/island_netmigration_",disttype,".csv"))
 }
 
 #' Estimate island visibility relative to horizon
@@ -1226,7 +1227,7 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
 #' visible area on island 2 relative to the entire island area.
 #' @export
 pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv",height=0,plotfigs=FALSE) {
-  intervalfile <- read.csv(intervalfile)
+  intervalfile <- utils::read.csv(intervalfile)
   points <- sf::st_read(points,fid_column_name="FID")
 
   #check projection on input points, set to WGS84 (EPSG:4326) if undefined
@@ -1235,13 +1236,13 @@ pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv
   }
 
   #extract geodetic latitude for each point and append to points file
-  points$geolat <- st_coordinates(st_transform(points,4326))[,2]
+  points$geolat <- sf::st_coordinates(sf::st_transform(points,4326))[,2]
   #reproject input points to target projection
   points_transformed <- sf::st_transform(points,epsg)
   numintervals = max(intervalfile$Interval)
 
   if ((nrow(points_transformed) > 5) && (plotfigs == TRUE)) {
-    figtest <- askYesNo(
+    figtest <- utils::askYesNo(
       msg=base::paste0("This function will generate a maximum of ",numintervals*as.numeric(nrow(points_transformed))^2," visibility maps. Are you sure you want to plot visibility maps? Yes/No/Cancel"))
   }
 
@@ -1355,11 +1356,11 @@ pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv
                 mapfig <- ggplot2::ggplot()+
                   ggspatial::layer_spatial(raster::raster(islandcrop))+
                   ggplot2::scale_fill_viridis_c(na.value = "transparent",name="Elevation")+
-                  ggplot2::geom_sf(data=p1,size=4,shape=17,aes(colour="Observer"))+
-                  ggplot2::geom_sf(data=testpoints_visible,size=0.7,aes(colour="Visible Area"))+
-                  ggplot2::scale_colour_manual(name=NULL,values = c("Observer"="white","Visible Area"="white"),guide=guide_legend(override.aes = list(shape=c(17,16))))+
+                  ggplot2::geom_sf(data=p1,size=4,shape=17,ggplot2::aes(colour="Observer"))+
+                  ggplot2::geom_sf(data=testpoints_visible,size=0.7,ggplot2::aes(colour="Visible Area"))+
+                  ggplot2::scale_colour_manual(name=NULL,values = c("Observer"="white","Visible Area"="white"),guide=ggplot2::guide_legend(override.aes = list(shape=c(17,16))))+
                   ggplot2::ggtitle(base::paste0("Visibility of ",p2_names[f]," from ",p1_names[f]))+
-                  theme(legend.key = element_rect(fill = "darkgrey"))
+                  ggplot2::theme(legend.key = ggplot2::element_rect(fill = "darkgrey"))
                 ggplot2::ggsave(filename = base::paste0("output/visibilitymap_",p1_names[f],"_",p2_names[t],".png"),device="png",plot=mapfig)
               }
             }
@@ -1371,7 +1372,7 @@ pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv
     visibleprop[intvlname] <- prop
   }
   visiblearea$mean <- apply(visiblearea[3:ncol(visiblearea)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(visiblearea,base::paste0("output/island_visiblearea.csv"))
+  utils::write.csv(visiblearea,base::paste0("output/island_visiblearea.csv"))
   visibleprop$mean <- apply(visibleprop[3:ncol(visibleprop)],1,stats::weighted.mean,intervalfile$TimeInterval,na.rm=TRUE)
-  write.csv(visibleprop,base::paste0("output/island_visibleproportion.csv"))
+  utils::write.csv(visibleprop,base::paste0("output/island_visibleproportion.csv"))
 }

@@ -79,7 +79,7 @@ getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
   }
 
   #write output file
-  write.csv(intervalfile,"output/intervals.csv")
+  utils::write.csv(intervalfile,"output/intervals.csv")
   message("Done!")
 }
 
@@ -166,6 +166,6 @@ getintervals_sealvl <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
       )
     }
   }
-  write.csv(intervalfile,"output/intervals.csv")
+  utils::write.csv(intervalfile,"output/intervals.csv")
   message("Done!")
 }

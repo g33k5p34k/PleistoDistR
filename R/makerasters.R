@@ -20,7 +20,7 @@
 #' own custom interval file (with nice round mean sea level values, for example) although the file will need to have a column named MeanDepth.
 #' @export
 makemaps <- function(inputraster,epsg,intervalfile="output/intervals.csv") {
-  intervalfile = read.csv(intervalfile)
+  intervalfile = utils::read.csv(intervalfile)
   inputraster = terra::rast(inputraster)
 
   numintervals = max(intervalfile$Interval)
@@ -45,7 +45,7 @@ makemaps <- function(inputraster,epsg,intervalfile="output/intervals.csv") {
     terra::writeRaster(outraster_projected,paste("output/raster_topo/interval",x,".tif",sep=""),filetype="GTiff",overwrite=TRUE)
 
     #reclassify all values as 1 to create flat raster
-    convmat <- cbind(intervalfile$MeanDepth[x+1],as.numeric(global(inputraster,fun="max")),1)
+    convmat <- cbind(intervalfile$MeanDepth[x+1],as.numeric(terra::global(inputraster,fun="max")),1)
     outraster_flat <- terra::classify(outraster_projected,convmat)
 
     #write flat raster to raster_flat folder

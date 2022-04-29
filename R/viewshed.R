@@ -37,7 +37,7 @@ rasterprofile <- function(r, xy1, xy2){
   nsteps = 1 + base::round(dx/ min(terra::res(r)))
   xc = xy1[1] + (0:nsteps) * (xy2[1]-xy1[1])/nsteps
   yc = xy1[2] + (0:nsteps) * (xy2[2]-xy1[2])/nsteps
-  zc <- r[cellFromXY(r,cbind(xc,yc))]
+  zc <- r[terra::cellFromXY(r,cbind(xc,yc))]
   colnames(zc) <- NULL
   data.frame(x=xc, y=yc, z=zc)
 }
