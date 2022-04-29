@@ -13,10 +13,6 @@
 #' associated EPSG code (https://epsg.org/home). Geographic coordinate system projections are not recommended as those will result
 #' in distance matrices calculated in decimal degrees rather than in distance units.
 #' @return This function outputs a pairwise distance matrix of inter-point Euclidean distances in long format.
-#' @examples
-#' #load example data (AntPops.shp, adapted from Darwell et al (2020))
-#' #note that no interval file input is needed (since Euclidean distances are time-invariant)
-#' pleistodist_euclidean(points="inst/extdata/AntPops.shp",epsg=3141)
 #' @export
 pleistodist_euclidean <- function(points,epsg) {
   points = sf::st_read(points,fid_column_name="FID")
@@ -78,8 +74,6 @@ pleistodist_euclidean <- function(points,epsg) {
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island centroid-to-centroid distances in long format, with
 #' one column per interval.
-#' @examples
-#' pleistodist_centroid(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv") {
   intervalfile = read.csv(intervalfile)
@@ -219,8 +213,6 @@ pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv"
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
-#' @examples
-#' pleistodist_leastshore(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.csv") {
   intervalfile = read.csv(intervalfile)
@@ -354,8 +346,6 @@ pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.cs
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
-#' @examples
-#' pleistodist_leastcost(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv") {
   intervalfile = read.csv(intervalfile)
@@ -501,11 +491,6 @@ pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv
 #' ok with long runtimes, then maxsamp can be set to NA.
 #' @return This function outputs an asymmetric pairwise distance matrix of mean shore-to-shore distances in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
-#' @examples
-#' #load example data, with shoreline sampling points capped at 1000
-#' pleistodist_meanshore(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",maxsamp=1000)
-#' #load example data, with no cap on the number of sampling points along the shoreline (will lead to very long runtimes for large datasets)
-#' pleistodist_meanshore(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",maxsamp=NA)
 #' @export
 pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv",maxsamp=1000) {
   intervalfile = read.csv(intervalfile)
@@ -665,8 +650,6 @@ pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs an asymmetric pairwise distance matrix of relative island widths in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
-#' @examples
-#' pleistodist_relativewidth(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistodist_relativewidth <- function (points, epsg,intervalfile="output/intervals.csv") {
   intervalfile = read.csv(intervalfile)
@@ -786,8 +769,6 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile="output/interva
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs three matrices of island shape estimates in long format, with one column per interval in each matrix.
-#' @examples
-#' pleistoshape_all(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- read.csv(intervalfile)
@@ -853,7 +834,7 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
         islandmask <- terra::vect(invector[p1, ,op=sf::st_contains]) #use shapefile to create a mask layer
         islandtopo <- terra::mask(inraster,islandmask) #mask topo raster to isolate single island
         islandtopo_cropped <- terra::crop(islandtopo,islandmask) #crop raster extent to single island
-        islandtopo_cropped_sp <- as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
+        islandtopo_cropped_sp <- methods::as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
         isurfacearea <- sp::surfaceArea(islandtopo_cropped_sp) #calculate surface area (incorporating elevation)
         ia <- c(ia,iarea)
         ip <- c(ip,iperimeter)
@@ -893,8 +874,6 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island perimeter estimates in long format, with one column per interval.
-#' @examples
-#' pleistoshape_perimeter(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- read.csv(intervalfile)
@@ -967,8 +946,6 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.c
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of 2D island area estimates in long format, with one column per interval.
-#' @examples
-#' pleistoshape_area(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- read.csv(intervalfile)
@@ -1042,8 +1019,6 @@ pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") 
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
-#' @examples
-#' pleistoshape_surfacearea(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- read.csv(intervalfile)
@@ -1093,7 +1068,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
         islandmask <- terra::vect(invector[p1, ,op=sf::st_contains]) #use shapefile to create a mask layer
         islandtopo <- terra::mask(inraster,islandmask) #mask topo raster to isolate single island
         islandtopo_cropped <- terra::crop(islandtopo,islandmask) #crop raster extent to single island
-        islandtopo_cropped_sp <- as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
+        islandtopo_cropped_sp <- methods::as(raster::raster(islandtopo_cropped),"SpatialPixelsDataFrame") #convert spatraster to sp format
         isurfacearea <- sp::surfaceArea(islandtopo_cropped_sp) #calculate surface area (incorporating elevation)
         isa <- c(isa,isurfacearea)
         message(paste("Island surface area is ",isurfacearea,"m^2",sep=""))
@@ -1131,9 +1106,6 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
-#' @examples
-#' pleistodist_netmig(points="inst/extdata/AntPops.shp",epsg=3141,disttype="centroid",intervalfile="output/intervals.csv")
-#' pleistodist_netmig(points="inst/extdata/AntPops.shp",epsg=3141,disttype="meanshore",intervalfile="output/intervals.csv")
 #' @export
 pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/intervals.csv") {
   #check to make sure a valid disttype is supplied
@@ -1252,8 +1224,6 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
 #' pairwise comparisons is very high (>5 points in the points file).
 #' @return This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
 #' visible area on island 2 relative to the entire island area.
-#' @examples
-#' pleistodist_visibility(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",height=50)
 #' @export
 pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv",height=0,plotfigs=FALSE) {
   intervalfile <- read.csv(intervalfile)

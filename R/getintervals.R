@@ -3,16 +3,10 @@
 #'
 #' This function generates an interval file, which is the master file for controlling all downstream PleistoDist calculations. This file essentially simplifies Pleistocene-era sea level change into a number of discrete time intervals.
 #'
-#' @param time Maximum time cutoff in kya. PleistoDist calculates the average distance between islands over a user-defined period of time. Users will have to specify an upper time bound (in thousands of years [kya]) for their PleistoDist analysis, which by default ranges from 0.1 kya to 3000 kya (i.e. 100 to 3,000,000 years ago). The lower time bound is fixed at the present day (0 kya).
+#' @param time Maximum time cutoff in kya. PleistoDist calculates the average distance between islands over a user-defined period of time. Users will have to specify an upper time bound (in thousands of years (kya)) for their PleistoDist analysis, which by default ranges from 0.1 kya to 3000 kya (i.e. 100 to 3,000,000 years ago). The lower time bound is fixed at the present day (0 kya).
 #' @param intervals Number of time interval bins to generate between the present day and the time-cutoff. More time intervals will lead to more fine-grained geomorphology calculations, at the expense of increased computational time. Under default conditions, the number of intervals should not exceed time-cutoff*10.
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
-#' @examples
-#' #if using the default sea level reconstruction
-#' getintervals_time(100,10) #time cutoff of 100,000 years, for 10 time intervals
-#' #if using a custom sea level reconstruction
-#' sealvlfile <- read.csv("reconstruction.csv")
-#' getintervals_time(100,10,sealvl=sealvlfile) #time cutoff of 100,000 years, for 10 time intervals, using a custom sea level reconstruction file.
 #' @export
 getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 
@@ -93,13 +87,10 @@ getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 #'
 #' #' This function generates an interval file, which is the master file for controlling all downstream PleistoDist calculations. This file essentially simplifies Pleistocene-era sea level change into a number of discrete sea level intervals.
 #'
-#' @param time Maximum time cutoff in kya. PleistoDist calculates the average distance between islands over a user-defined period of time. Users will have to specify an upper time bound (in thousands of years [kya]) for their PleistoDist analysis, which by default can range from 0.1 kya to 3000 kya (i.e. 100 to 3,000,000 years ago). The lower time bound is fixed at the present day (0 kya).
+#' @param time Maximum time cutoff in kya. PleistoDist calculates the average distance between islands over a user-defined period of time. Users will have to specify an upper time bound (in thousands of years (kya)) for their PleistoDist analysis, which by default can range from 0.1 kya to 3000 kya (i.e. 100 to 3,000,000 years ago). The lower time bound is fixed at the present day (0 kya).
 #' @param intervals Number of sea level interval bins to generate between the present day and the time-cutoff. More sea level intervals will lead to more fine-grained geomorphology calculations, at the expense of increased computational time.
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
-#' @examples
-#' getintervals_sealvl(100,10) #time cutoff of 100,000 years, for 10 sea level depth intervals
-#' getintervals_sealvl(100,10,sealvl="customfile.csv") #time cutoff of 100,000 years, for 10 sea level depth intervals, using a custom sea level reconstruction file
 #' @export
 getintervals_sealvl <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 
@@ -114,7 +105,7 @@ getintervals_sealvl <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
   }
 
   intervals = as.numeric(intervals)
-  
+
   #create outputfile
   if (base::dir.exists("output")==FALSE) {
     base::dir.create("output")

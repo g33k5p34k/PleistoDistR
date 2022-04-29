@@ -18,9 +18,6 @@
 #' @param intervalfile This is the master control file generated using either the getintervals_time() or getintervals_sealvl()
 #' function. By default, this function will use the "intervals.csv" file stored in the output folder, but users can also specify their
 #' own custom interval file (with nice round mean sea level values, for example) although the file will need to have a column named MeanDepth.
-#' @examples
-#' #load bathymetric raster for Fiji, with a projection EPSG 3141 (Fiji 1956/UTM Zone 60S), and generate maps
-#' makemaps(inputraster="inst/extdata/FJ.asc",epsg=3141,intervalfile="output/intervals.csv")
 #' @export
 makemaps <- function(inputraster,epsg,intervalfile="output/intervals.csv") {
   intervalfile = read.csv(intervalfile)

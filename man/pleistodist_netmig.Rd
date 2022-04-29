@@ -44,7 +44,3 @@ the island width relative to the other island, d is the inter-island distance, a
 net migration rate is greater than 1, then the net movement of propagules occurs from island 1 to island 2. If the net migration rate
 is less than 1, then the net movement of propagules occurs from island 2 to island 1.
 }
-\examples{
-pleistodist_netmig(points="inst/extdata/AntPops.shp",epsg=3141,disttype="centroid",intervalfile="output/intervals.csv")
-pleistodist_netmig(points="inst/extdata/AntPops.shp",epsg=3141,disttype="meanshore",intervalfile="output/intervals.csv")
-}

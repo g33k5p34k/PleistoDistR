@@ -30,6 +30,3 @@ This function outputs a matrix of island perimeter estimates in long format, wit
 This function calculates the perimeter of user-specified islands at each time/sea level interval, and calculates the weighted average perimter over the user-defined time period.
 PleistoDist will return a value of NA if the island is submerged underwater for that particular interval.
 }
-\examples{
-pleistoshape_perimeter(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
-}

@@ -1,17 +1,16 @@
 Package: PleistoDist
 Title: Calculating Island Geomorphologies Over Pleistocene Time
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("David", "Tan", , "david.tanjx@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7019-7871"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: PleistoDist is a tool for visualising and quantifying the effects of Pleistocene-era sea level change on islands over time. This tool comes packaged as series of R functions, for generating maps of island extents for different Pleistocene-era sea levels, and calculating various inter-island and intra island distance and geomorphological metrics over time. This R package is a complete ground-up rebuild of the original PleistoDist, which was written as an ArcMap plugin.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Depends: 
-    R (>= 4.0.5),
+    R (>= 4.0.0),
     plyr,
     dplyr,
     ggplot2,
@@ -24,3 +23,6 @@ Depends:
     lwgeom,
     tibble,
     stats
+Imports: 
+    methods,
+    tidyr

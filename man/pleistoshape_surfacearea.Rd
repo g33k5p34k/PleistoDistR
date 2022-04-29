@@ -30,6 +30,3 @@ This function outputs a matrix of island surface area estimates in long format, 
 This function calculates the surface area of user-specified islands at each time/sea level interval, and calculates the weighted average surface area over the user-defined time period.
 PleistoDist will return a value of NA if the island is submerged underwater for that particular interval.
 }
-\examples{
-pleistoshape_surfacearea(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv")
-}

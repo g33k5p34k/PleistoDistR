@@ -8,7 +8,8 @@ pleistodist_visiblity(
   points,
   epsg,
   intervalfile = "output/intervals.csv",
-  height = 0
+  height = 0,
+  plotfigs = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ be aware that custom interval files may lead to inaccurate weighted mean calcula
 \item{height}{The height of the observer relative to the ground level. This can be used to model the visibility of nearby islands to
 flying animals (e.g. birds, bats, insects). As such, if an origin point is defined on a pixel that is 100m above sea level, a height value of 100 will result in
 visibility estimates for an organism flying 200m above sea level (with sea level calibrated relative to the sea level of that particular interval).}
+
+\item{plotfigs}{TRUE/FALSE option to generate island visibility maps for each pairwise island comparison. The function will generate a prompt if the number of
+pairwise comparisons is very high (>5 points in the points file).}
 }
 \value{
 This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
@@ -47,7 +51,4 @@ visible, then this function will return a value of 0. Do note that the horizon d
 to the specific coordinates of the destination point. Also note that this calculation is a very rough estimate and the calculated visible area may not be identical across different runs (due to the
 sampling method applied), and does not account for the effect of fog, mist, haze, etc. Lastly, this function calculates the weighted mean visibility over time/sea level of the destination
 island relative to the origin point.
-}
-\examples{
-pleistodist_visibility(points="inst/extdata/AntPops.shp",epsg=3141,intervalfile="output/intervals.csv",height=50)
 }

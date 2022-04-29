@@ -29,7 +29,3 @@ generates a series of island extents based on the mean sea levels specified in t
 three formats: ESRI shapefile format, a flat raster format (with no topography), and a topographic raster format that preserves
 the original bathymetric elevations of each island pixel, reprojected to the user-specified projected coordinate system.
 }
-\examples{
-#load bathymetric raster for Fiji, with a projection EPSG 3141 (Fiji 1956/UTM Zone 60S), and generate maps
-makemaps(inputraster="inst/extdata/FJ.asc",epsg=3141,intervalfile="output/intervals.csv")
-}
