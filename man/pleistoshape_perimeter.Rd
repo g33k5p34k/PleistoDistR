@@ -30,3 +30,16 @@ This function outputs a matrix of island perimeter estimates in long format, wit
 This function calculates the perimeter of user-specified islands at each time/sea level interval, and calculates the weighted average perimter over the user-defined time period.
 PleistoDist will return a value of NA if the island is submerged underwater for that particular interval.
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate island perimeter, projecting points using EPSG:3141
+pleistoshape_perimeter(points="points.shp",epsg=3141)
+#if using a custom user-generated interval file
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistoshape_perimeter(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+}
+}

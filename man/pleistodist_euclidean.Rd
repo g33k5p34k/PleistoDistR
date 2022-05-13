@@ -25,3 +25,9 @@ This function calculates the straight-line distance ("as the crow flies) between
 Because these points are invariant across space and time and independent of sea level change, this calculation
 is only performed once instead of repeatedly across different sea level or time intervals.
 }
+\examples{
+\dontrun{
+#Project input points using EPSG:3141
+pleistodist_euclidean(points="points.shp",epsg=3141)
+}
+}

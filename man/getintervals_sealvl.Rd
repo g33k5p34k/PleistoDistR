@@ -19,3 +19,12 @@ An interval file in the automatically-generated 'output' folder. This interval f
 \description{
 #' This function generates an interval file, which is the master file for controlling all downstream PleistoDist calculations. This file essentially simplifies Pleistocene-era sea level change into a number of discrete sea level intervals.
 }
+\examples{
+\dontrun{
+#generate 20 sea level-binned intervals, with a cutoff of 20kya
+getintervals_sealvl(time=20,intervals=20)
+#if using a custom sea level reconstruction
+customsealvl <- read.csv("customsealvl.csv")
+getintervals_sealvl(time=20,intervals=20,sealvl=customsealvl)
+}
+}

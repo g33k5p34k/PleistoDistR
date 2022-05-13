@@ -52,3 +52,17 @@ to the specific coordinates of the destination point. Also note that this calcul
 sampling method applied), and does not account for the effect of fog, mist, haze, etc. Lastly, this function calculates the weighted mean visibility over time/sea level of the destination
 island relative to the origin point.
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate inter-island visibility, projecting points using EPSG:3141,
+#with an observer height of 0 and no figure plotting
+pleistodist_visibility(points="points.shp",epsg=3141)
+#if using a custom user-generated interval file, observer 20m above ground, with figure plotting
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistodist_visibility(points="points.shp",epsg=3141,intervalfile="f.csv",height=20,plotfigs=TRUE)
+}
+}

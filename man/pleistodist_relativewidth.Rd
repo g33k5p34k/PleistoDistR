@@ -34,3 +34,16 @@ a line perpendicular to the centroid-centroid line extending from the centroid o
 relative to the orientation of the receiving island, and is mostly needed for calculating the expected net inter-island migration, as defined
 in chapter 6 of MacArthur and Wilson (1967).
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate relative source island width, projecting points using EPSG:3141
+pleistodist_relativewidth(points="points.shp",epsg=3141)
+#if using a custom user-generated interval file
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistodist_relativewidth(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+}
+}

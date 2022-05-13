@@ -13,6 +13,11 @@
 #' associated EPSG code (https://epsg.org/home). Geographic coordinate system projections are not recommended as those will result
 #' in distance matrices calculated in decimal degrees rather than in distance units.
 #' @return This function outputs a pairwise distance matrix of inter-point Euclidean distances in long format.
+#' @examples
+#' \dontrun{
+#' #Project input points using EPSG:3141
+#' pleistodist_euclidean(points="points.shp",epsg=3141)
+#' }
 #' @export
 pleistodist_euclidean <- function(points,epsg) {
   points = sf::st_read(points,fid_column_name="FID")
@@ -74,6 +79,18 @@ pleistodist_euclidean <- function(points,epsg) {
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island centroid-to-centroid distances in long format, with
 #' one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate inter-island centroid-to-centroid distances, projecting points using EPSG:3141
+#' pleistodist_centroid(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_centroid("points.shp",3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv") {
   intervalfile = utils::read.csv(intervalfile)
@@ -213,6 +230,18 @@ pleistodist_centroid <- function(points,epsg,intervalfile="output/intervals.csv"
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate inter-island least shore-to-shore distances, projecting points using EPSG:3141
+#' pleistodist_leastshore(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_leastshore(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.csv") {
   intervalfile = utils::read.csv(intervalfile)
@@ -346,6 +375,18 @@ pleistodist_leastshore <- function(points,epsg,intervalfile="output/intervals.cs
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate inter-point least-cost distances, projecting points using EPSG:3141
+#' pleistodist_leastcost(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_leastcost(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv") {
   intervalfile = utils::read.csv(intervalfile)
@@ -491,6 +532,20 @@ pleistodist_leastcost <- function(points,epsg,intervalfile="output/intervals.csv
 #' ok with long runtimes, then maxsamp can be set to NA.
 #' @return This function outputs an asymmetric pairwise distance matrix of mean shore-to-shore distances in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate inter-island mean shore-to-shore distances, projecting points using EPSG:3141,
+#' #with default donor island shoreline sampling density
+#' pleistodist_meanshore(points="points.shp",epsg=3141)
+#' #Using a custom user-generated interval file,
+#' #with 1 point sampled every 100m along the donor island shoreline
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_meanshore(points="points.shp",epsg=3141,intervalfile="output/custom.csv",maxsamp=NA)
+#' }
 #' @export
 pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv",maxsamp=1000) {
   intervalfile = utils::read.csv(intervalfile)
@@ -650,6 +705,18 @@ pleistodist_meanshore <- function(points,epsg,intervalfile="output/intervals.csv
 #' be aware that custom interval files may lead to inaccurate weighted mean distance calculations.
 #' @return This function outputs an asymmetric pairwise distance matrix of relative island widths in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate relative source island width, projecting points using EPSG:3141
+#' pleistodist_relativewidth(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_relativewidth(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistodist_relativewidth <- function (points, epsg,intervalfile="output/intervals.csv") {
   intervalfile = utils::read.csv(intervalfile)
@@ -769,6 +836,18 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile="output/interva
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs three matrices of island shape estimates in long format, with one column per interval in each matrix.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate island shape, perimeter, and surface area, projecting points using EPSG:3141
+#' pleistoshape_all(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistoshape_all(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- utils::read.csv(intervalfile)
@@ -874,6 +953,18 @@ pleistoshape_all <- function (points,epsg,intervalfile="output/intervals.csv") {
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island perimeter estimates in long format, with one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate island perimeter, projecting points using EPSG:3141
+#' pleistoshape_perimeter(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistoshape_perimeter(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- utils::read.csv(intervalfile)
@@ -946,6 +1037,18 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile="output/intervals.c
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of 2D island area estimates in long format, with one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate 2D island area, projecting points using EPSG:3141
+#' pleistoshape_area(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistoshape_area(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- utils::read.csv(intervalfile)
@@ -1019,6 +1122,18 @@ pleistoshape_area <- function (points,epsg,intervalfile="output/intervals.csv") 
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate island surface area, projecting points using EPSG:3141
+#' pleistoshape_surfacearea(points="points.shp",epsg=3141,intervalfile="output/intervals.csv")
+#' #if using a custom user-generated interval file
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistoshape_surfacearea(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+#' }
 #' @export
 pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals.csv") {
   intervalfile <- utils::read.csv(intervalfile)
@@ -1106,6 +1221,18 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate net migration, for centroid-to-centroid distances, projecting points using EPSG:3141
+#' pleistodist_netmig(points="points.shp",epsg=3141,disttype="centroid")
+#' #if using a custom user-generated interval file, with mean shore-to-shore distances
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_netmig(points="points.shp",epsg=3141,disttype="meanshore",intervalfile="custom.csv")
+#' }
 #' @importFrom dplyr %>%
 #' @export
 pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/intervals.csv") {
@@ -1225,6 +1352,19 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile="output/interva
 #' pairwise comparisons is very high (>5 points in the points file).
 #' @return This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
 #' visible area on island 2 relative to the entire island area.
+#' @examples
+#' \dontrun{
+#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=20)
+#' #generate maps based on interval file, projecting map using EPSG:3141
+#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' #calculate inter-island visibility, projecting points using EPSG:3141,
+#' #with an observer height of 0 and no figure plotting
+#' pleistodist_visibility(points="points.shp",epsg=3141)
+#' #if using a custom user-generated interval file, observer 20m above ground, with figure plotting
+#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+#' pleistodist_visibility(points="points.shp",epsg=3141,intervalfile="f.csv",height=20,plotfigs=TRUE)
+#' }
 #' @export
 pleistodist_visiblity <- function(points,epsg,intervalfile="output/intervals.csv",height=0,plotfigs=FALSE) {
   intervalfile <- utils::read.csv(intervalfile)

@@ -7,6 +7,14 @@
 #' @param intervals Number of time interval bins to generate between the present day and the time-cutoff. More time intervals will lead to more fine-grained geomorphology calculations, at the expense of increased computational time. Under default conditions, the number of intervals should not exceed time-cutoff*10.
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
+#' @examples
+#' \dontrun{
+#' #generate 20 time-binned intervals, with a cutoff of 20kya
+#' getintervals_time(time=20,intervals=20)
+#' #if using a custom sea level reconstruction
+#' customsealvl <- read.csv("customsealvl.csv")
+#' getintervals_time(time=20,intervals=20,sealvl=customsealvl)
+#' }
 #' @export
 getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 
@@ -91,6 +99,14 @@ getintervals_time <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 #' @param intervals Number of sea level interval bins to generate between the present day and the time-cutoff. More sea level intervals will lead to more fine-grained geomorphology calculations, at the expense of increased computational time.
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
+#' @examples
+#' \dontrun{
+#' #generate 20 sea level-binned intervals, with a cutoff of 20kya
+#' getintervals_sealvl(time=20,intervals=20)
+#' #if using a custom sea level reconstruction
+#' customsealvl <- read.csv("customsealvl.csv")
+#' getintervals_sealvl(time=20,intervals=20,sealvl=customsealvl)
+#' }
 #' @export
 getintervals_sealvl <- function(time,intervals,sealvl=bintanja_vandewal_2008) {
 

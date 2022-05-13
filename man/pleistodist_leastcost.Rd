@@ -34,3 +34,16 @@ that minimises the number of overwater crossings. If both points lie on the same
 is/are underwater, then a value of NA is returned. After calculating the pairwise least-cost distances for each interval, this function calculates
 the time-weighted average least-cost distance between each pair of points.
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate inter-point least-cost distances, projecting points using EPSG:3141
+pleistodist_leastcost(points="points.shp",epsg=3141)
+#if using a custom user-generated interval file
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistodist_leastcost(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+}
+}

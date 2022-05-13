@@ -29,3 +29,11 @@ generates a series of island extents based on the mean sea levels specified in t
 three formats: ESRI shapefile format, a flat raster format (with no topography), and a topographic raster format that preserves
 the original bathymetric elevations of each island pixel, reprojected to the user-specified projected coordinate system.
 }
+\examples{
+\dontrun{
+#generate maps of the Fiji Archipelago with the EPSG:3141 projection, with default interval file
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv")
+#if using a custom/modified interval file
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/customintervals/csv")
+}
+}

@@ -34,3 +34,16 @@ shore-to-shore distance between the selected landmasses for each time/sea level 
 is/are underwater, then a value of NA is returned. After calculating the pairwise island distances for each interval, this function calculates
 the time-weighted average least shore-to-shore distance between each island pair.
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate inter-island least shore-to-shore distances, projecting points using EPSG:3141
+pleistodist_leastshore(points="points.shp",epsg=3141)
+#if using a custom user-generated interval file
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistodist_leastshore(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
+}
+}

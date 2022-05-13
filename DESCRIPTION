@@ -4,7 +4,7 @@ Version: 1.0.0
 Authors@R: 
     person("David", "Tan", , "david.tanjx@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7019-7871"))
-Description: PleistoDist is a tool for visualising and quantifying the effects of Pleistocene-era sea level change on islands over time. This tool comes packaged as series of R functions, for generating maps of island extents for different Pleistocene-era sea levels, and calculating various inter-island and intra island distance and geomorphological metrics over time. This R package is a complete ground-up rebuild of the original PleistoDist, which was written as an ArcMap plugin.
+Description: Visualising and quantifying the effects of Pleistocene-era sea level change on islands over time. This tool is used to generate maps of island extents for different Pleistocene-era sea levels and calculate various inter-island and intra island distance and geomorphological metrics over time.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -26,3 +26,6 @@ Imports:
     gdistance,
     lwgeom,
     tibble,
+Suggests: 
+    R.rsp
+VignetteBuilder: R.rsp

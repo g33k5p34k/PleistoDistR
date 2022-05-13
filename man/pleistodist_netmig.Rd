@@ -44,3 +44,16 @@ the island width relative to the other island, d is the inter-island distance, a
 net migration rate is greater than 1, then the net movement of propagules occurs from island 1 to island 2. If the net migration rate
 is less than 1, then the net movement of propagules occurs from island 2 to island 1.
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate net migration, for centroid-to-centroid distances, projecting points using EPSG:3141
+pleistodist_netmig(points="points.shp",epsg=3141,disttype="centroid")
+#if using a custom user-generated interval file, with mean shore-to-shore distances
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistodist_netmig(points="points.shp",epsg=3141,disttype="meanshore",intervalfile="custom.csv")
+}
+}

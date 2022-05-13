@@ -47,3 +47,18 @@ can set a cap on the maximum number of shoreline points to sample (the default c
 is/are underwater, then a value of NA is returned. After calculating the pairwise island distances for each interval, this function calculates
 the time-weighted average mean shore-to-shore distance between each island pair.
 }
+\examples{
+\dontrun{
+#generate interval file for 20 intervals and 20kya cutoff time, binning by time
+getintervals_time(time=20,intervals=20)
+#generate maps based on interval file, projecting map using EPSG:3141
+makemaps(inputraster="FJ.asc",epsg=3141)
+#calculate inter-island mean shore-to-shore distances, projecting points using EPSG:3141,
+#with default donor island shoreline sampling density
+pleistodist_meanshore(points="points.shp",epsg=3141)
+#Using a custom user-generated interval file,
+#with 1 point sampled every 100m along the donor island shoreline
+makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
+pleistodist_meanshore(points="points.shp",epsg=3141,intervalfile="output/custom.csv",maxsamp=NA)
+}
+}
