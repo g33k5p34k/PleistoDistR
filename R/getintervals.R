@@ -9,13 +9,13 @@
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
 #' @examples
-#' \dontrun{
-#' #generate 20 time-binned intervals, with a cutoff of 20kya
-#' getintervals_time(time=20,intervals=20,outdir="output")
-#' #if using a custom sea level reconstruction
-#' customsealvl <- read.csv("customsealvl.csv")
-#' getintervals_time(time=20,intervals=20,outdir="output",sealvl=customsealvl)
-#' }
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #generate 5 time-binned intervals, with a cutoff of 5kya,
+#' #using default sea-level reconstruction by Bintanja & Van de Wal (2008)
+#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #if using sea-level reconstruction by Spratt & Lisecki (2016)
+#' getintervals_time(time=5,intervals=5,outdir=path,sealvl=PleistoDist:::spratt_lisecki_2016)
 #' @export
 getintervals_time <- function(time,intervals,outdir,sealvl=bintanja_vandewal_2008) {
 
@@ -104,13 +104,13 @@ getintervals_time <- function(time,intervals,outdir,sealvl=bintanja_vandewal_200
 #' @param sealvl Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.
 #' @return An interval file in the automatically-generated 'output' folder. This interval file is needed for all downstream PleistoDist analyses
 #' @examples
-#' \dontrun{
-#' #generate 20 sea level-binned intervals, with a cutoff of 20kya
-#' getintervals_sealvl(time=20,intervals=20)
-#' #if using a custom sea level reconstruction
-#' customsealvl <- read.csv("customsealvl.csv")
-#' getintervals_sealvl(time=20,intervals=20,sealvl=customsealvl)
-#' }
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #generate 5 sea level-binned intervals, with a cutoff of 20kya,
+#' #using default sea-level reconstruction by Bintanja & Van de Wal (2008)
+#' getintervals_sealvl(time=20,intervals=5,outdir=path)
+#' #if using sea-level reconstruction by Spratt & Lisecki (2016)
+#' getintervals_sealvl(time=20,intervals=5,outdir=path,sealvl=PleistoDist:::spratt_lisecki_2016)
 #' @export
 getintervals_sealvl <- function(time,intervals,outdir,sealvl=bintanja_vandewal_2008) {
 

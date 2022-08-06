@@ -29,12 +29,16 @@
 #' @return This function generates map outputs corresponding with the sea levels specified in the interval file. Maps are generated in flat ASCII raster (without topography),
 #'  topographic ASCII raster, and ESRI shapefile formats.
 #' @examples
-#' \dontrun{
-#' #generate maps of the Fiji Archipelago with the EPSG:3141 projection, with default interval file and a subsidence offset of 10 m per kya
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="output",offset=-10)
-#' #if using a custom/modified interval file
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/customintervals.csv",outdir="output")
-#' }
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate maps of the Fiji Archipelago with the EPSG:3141 projection,
+#' #with default interval file and a subsidence offset of 10 m per kya
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),
+#'     outdir=path,offset=-10)
 #' @export
 makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
   intervalfile = utils::read.csv(intervalfile)

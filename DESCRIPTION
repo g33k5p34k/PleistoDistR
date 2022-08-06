@@ -1,6 +1,6 @@
 Package: PleistoDist
 Title: Calculating Island Geomorphologies Over Pleistocene Time
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     person("David", "Tan", , "david.tanjx@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7019-7871"))
@@ -8,7 +8,7 @@ Description: Visualising and quantifying the effects of Pleistocene-era sea leve
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Depends: 
     R (>= 4.0.0),
     stats

@@ -4,7 +4,7 @@
 \alias{pleistodist_relativewidth}
 \title{Calculate width of islands relative to each other}
 \usage{
-pleistodist_relativewidth(points, epsg, intervalfile = "output/intervals.csv")
+pleistodist_relativewidth(points, epsg, intervalfile, mapdir, outdir)
 }
 \arguments{
 \item{points}{A user-generated multi-point shapefile (.shp) containing at least two points. If the shapefile attribute table contains a column
@@ -22,6 +22,12 @@ function that defines the number of intervals, the sea level at each interval, a
 function will use the "intervals.csv" file stored in the output folder, but users can also specify their own custom interval
 file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 be aware that custom interval files may lead to inaccurate weighted mean distance calculations.}
+
+\item{mapdir}{The directory containing map outputs from the makemaps() function
+(i.e. the directory containing the raster_flat, raster_topo, and shapefile folders).}
+
+\item{outdir}{Output directory for the inter-island relative width matrix file.
+If the specified output directory doesn't already exist, PleistoDist will create the output directory.}
 }
 \value{
 This function outputs an asymmetric pairwise distance matrix of relative island widths in long format, with
@@ -35,15 +41,24 @@ relative to the orientation of the receiving island, and is mostly needed for ca
 in chapter 6 of MacArthur and Wilson (1967).
 }
 \examples{
-\dontrun{
-#generate interval file for 20 intervals and 20kya cutoff time, binning by time
-getintervals_time(time=20,intervals=20)
+#create temp directory
+path <- file.path(tempdir())
+#create points shapefile
+points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#convert points to feature geometry
+points <- sf::st_sfc(points)
+points <- sf::st_cast(points, "POINT")
+#set default projection (WGS84)
+sf::st_crs(points) <- 4326
+#save shapefile
+sf::write_sf(points,paste0(path,"/points.shp"))
+#load bathymetry file
+fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#generate interval file for 5 intervals and 5kya cutoff time, binning by time
+getintervals_time(time=5,intervals=5,outdir=path)
 #generate maps based on interval file, projecting map using EPSG:3141
-makemaps(inputraster="FJ.asc",epsg=3141)
+makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #calculate relative source island width, projecting points using EPSG:3141
-pleistodist_relativewidth(points="points.shp",epsg=3141)
-#if using a custom user-generated interval file
-makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
-pleistodist_relativewidth(points="points.shp",epsg=3141,intervalfile="output/custom.csv")
-}
+pleistodist_relativewidth(points=paste0(path,"/points.shp"),epsg=3141,
+    intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 }

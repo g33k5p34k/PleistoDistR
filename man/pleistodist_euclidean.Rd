@@ -4,7 +4,7 @@
 \alias{pleistodist_euclidean}
 \title{Calculate Euclidean distance between points}
 \usage{
-pleistodist_euclidean(points, epsg)
+pleistodist_euclidean(points, epsg, outdir)
 }
 \arguments{
 \item{points}{A user-generated multi-point shapefile (.shp) containing at least two points. If the shapefile attribute table contains a column
@@ -16,6 +16,9 @@ projection to accurately calculate straight-line distances between points instea
 Users should specify a projected coordinate system appropriate to the geographic region being analysed using the projection's
 associated EPSG code (https://epsg.org/home). Geographic coordinate system projections are not recommended as those will result
 in distance matrices calculated in decimal degrees rather than in distance units.}
+
+\item{outdir}{Output directory for the Euclidean distance matrix (island_euclideandist.csv).
+If the specified output directory doesn't already exist, PleistoDist will create the output directory.}
 }
 \value{
 This function outputs a pairwise distance matrix of inter-point Euclidean distances in long format.
@@ -26,8 +29,17 @@ Because these points are invariant across space and time and independent of sea 
 is only performed once instead of repeatedly across different sea level or time intervals.
 }
 \examples{
-\dontrun{
-#Project input points using EPSG:3141
-pleistodist_euclidean(points="points.shp",epsg=3141)
-}
+#create temp directory
+path <- file.path(tempdir())
+#create points shapefile
+points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#convert points to feature geometry
+points <- sf::st_sfc(points)
+points <- sf::st_cast(points, "POINT")
+#set default projection (WGS84)
+sf::st_crs(points) <- 4326
+#save shapefile
+sf::write_sf(points,paste0(path,"/points.shp"))
+#Project input points using EPSG:3141 and calculate Euclidean distances
+pleistodist_euclidean(points=paste0(path,"/points.shp"),epsg=3141,outdir=path)
 }

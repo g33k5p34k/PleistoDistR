@@ -16,10 +16,19 @@
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs a pairwise distance matrix of inter-point Euclidean distances in long format.
 #' @examples
-#' \dontrun{
-#' #Project input points using EPSG:3141
-#' pleistodist_euclidean(points="points.shp",epsg=3141,outdir="output")
-#' }
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #Project input points using EPSG:3141 and calculate Euclidean distances
+#' pleistodist_euclidean(points=paste0(path,"/points.shp"),epsg=3141,outdir=path)
 #' @export
 pleistodist_euclidean <- function(points,epsg,outdir) {
 
@@ -88,15 +97,26 @@ pleistodist_euclidean <- function(points,epsg,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island centroid-to-centroid distances in long format, with
 #' one column per interval. This function also generates a file of pairwise relative island widths, which is used for calculating the net inter-island migration ratio.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island centroid-to-centroid distances, projecting points using EPSG:3141
-#' pleistodist_centroid(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistodist_centroid(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"), mapdir=path,outdir=path)
 #' @export
 pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -242,15 +262,26 @@ pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island least shore-to-shore distances, projecting points using EPSG:3141
-#' pleistodist_leastshore(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistodist_leastshore(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
 pleistodist_leastshore <- function(points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -390,15 +421,26 @@ pleistodist_leastshore <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-point least cost distances, projecting points using EPSG:3141
-#' pleistodist_leastcost(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistodist_leastcost(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
 pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -550,18 +592,29 @@ pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs an asymmetric pairwise distance matrix of mean shore-to-shore distances in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island mean shore-to-shore distances, projecting points using EPSG:3141
-#' pleistodist_meanshore(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles")
+#' pleistodist_meanshore(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,maxsamp=1000)
 #' #with 1 point sampled every 100m along the donor island shoreline
-#' pleistodist_meanshore(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output",maxsamp=NA)
-#' }
+#' pleistodist_meanshore(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,maxsamp=NA)
 #' @export
 pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp=1000) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -730,15 +783,26 @@ pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp
 #' @return This function outputs an asymmetric pairwise distance matrix of relative island widths in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate relative source island width, projecting points using EPSG:3141
-#' pleistodist_relativewidth(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapdir",outdir="output")
-#' }
+#' pleistodist_relativewidth(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
 pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -867,15 +931,26 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) 
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs three matrices of island shape estimates in long format, with one column per interval in each matrix.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate island shape, perimeter, and surface area, projecting points using EPSG:3141
-#' pleistoshape_all(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistoshape_all(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
 pleistoshape_all <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -990,15 +1065,26 @@ pleistoshape_all <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs a matrix of island perimeter estimates in long format, with one column per interval.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate island perimeter, projecting points using EPSG:3141
-#' pleistoshape_perimeter(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistoshape_perimeter(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
 pleistoshape_perimeter <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -1032,6 +1118,7 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile,mapdir,outdir) {
   for (i in 0:numintervals) {
     #load interval shapefile
     invector <- sf::st_read(base::paste0(mapdir,"/shapefile/interval",i,".shp"))
+    intvlname <- base::paste0("interval",i)
     ip <- c() #create blank list for temporarily storing perimeter values (before offloading into the main dataframe)
 
     #start of first order for-loop to select island 1
@@ -1080,15 +1167,26 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs a matrix of 2D island area estimates in long format, with one column per interval.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate 2D island area, projecting points using EPSG:3141
-#' pleistoshape_area(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistoshape_area(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
 pleistoshape_area <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -1171,17 +1269,28 @@ pleistoshape_area <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate island surface area, projecting points using EPSG:3141
-#' pleistoshape_surfacearea(points="points.shp",epsg=3141,intervalfile="output/intervals.csv",
-#' mapdir="mapfiles",outdir="output")
-#' }
+#' pleistoshape_surfacearea(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @export
-pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals.csv") {
+pleistoshape_surfacearea <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
   if(base::dir.exists(outdir)==FALSE) {
     base::dir.create(outdir)
@@ -1277,15 +1386,26 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile="output/intervals
 #' All pleistodist_netmig() outputs will also be written to this folder.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20,outdir="output")
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/intervals.csv",outdir="mapfiles")
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate net migration, for centroid-to-centroid distances, projecting points using EPSG:3141
-#' pleistodist_netmig(points="points.shp",epsg=3141,disttype="centroid",
-#' intervalfile="output/intervals.csv",mapdir="mapfiles",outdir="output")
-#' }
+#' pleistodist_netmig(points=paste0(path,"/points.shp"),epsg=3141,disttype="centroid",
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' @importFrom dplyr %>%
 #' @export
 pleistodist_netmig <- function(points,epsg,disttype,intervalfile,mapdir,outdir) {
@@ -1398,6 +1518,10 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile,mapdir,outdir) 
 #' function will use the "intervals.csv" file stored in the output folder, but users can also specify their own custom interval
 #' file (with nice round mean sea level values, for example), although users need to ensure that the same column names are preserved, and
 #' be aware that custom interval files may lead to inaccurate weighted mean calculations.
+#' @param mapdir The directory containing map outputs from the makemaps() function
+#' (i.e. the directory containing the raster_flat, raster_topo, and shapefile folders).
+#' @param outdir The output directory for the inter-island visibility matrices. This function generates two files, one estimating
+#' the absolute visible area of the destination island, and another estimating the proportion of the destination island visible.
 #' @param height The height of the observer relative to the ground level. This can be used to model the visibility of nearby islands to
 #' flying animals (e.g. birds, bats, insects). As such, if an origin point is defined on a pixel that is 100m above sea level, a height value of 100 will result in
 #' visibility estimates for an organism flying 200m above sea level (with sea level calibrated relative to the sea level of that particular interval).
@@ -1406,20 +1530,29 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile,mapdir,outdir) 
 #' @return This function returns two matrices, both in long format, of the visible area of island 2 relative to and origin point on island 1, and the proportion of the
 #' visible area on island 2 relative to the entire island area.
 #' @examples
-#' \dontrun{
-#' #generate interval file for 20 intervals and 20kya cutoff time, binning by time
-#' getintervals_time(time=20,intervals=20)
+#' #create temp directory
+#' path <- file.path(tempdir())
+#' #create points shapefile
+#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' #convert points to feature geometry
+#' points <- sf::st_sfc(points)
+#' points <- sf::st_cast(points, "POINT")
+#' #set default projection (WGS84)
+#' sf::st_crs(points) <- 4326
+#' #save shapefile
+#' sf::write_sf(points,paste0(path,"/points.shp"))
+#' #load bathymetry file
+#' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
+#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
+#' getintervals_time(time=5,intervals=5,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
-#' makemaps(inputraster="FJ.asc",epsg=3141)
+#' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island visibility, projecting points using EPSG:3141,
 #' #with an observer height of 0 and no figure plotting
-#' pleistodist_visibility(points="points.shp",epsg=3141)
-#' #if using a custom user-generated interval file, observer 20m above ground, with figure plotting
-#' makemaps(inputraster="FJ.asc",epsg=3141,intervalfile="output/custom.csv")
-#' pleistodist_visibility(points="points.shp",epsg=3141,intervalfile="f.csv",height=20,plotfigs=TRUE)
-#' }
+#' pleistodist_visibility(points=paste0(path,"/points.shp"),epsg=3141,
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,height=0,plotfigs=FALSE)
 #' @export
-pleistodist_visiblity <- function(points,epsg,intervalfile,mapdir,outdir,height=0,plotfigs=FALSE) {
+pleistodist_visibility <- function(points,epsg,intervalfile,mapdir,outdir,height=0,plotfigs=FALSE) {
   intervalfile <- utils::read.csv(intervalfile)
   points <- sf::st_read(points,fid_column_name="FID")
 
@@ -1558,7 +1691,7 @@ pleistodist_visiblity <- function(points,epsg,intervalfile,mapdir,outdir,height=
                     ggplot2::scale_fill_viridis_c(na.value = "transparent",name="Elevation")+
                     ggplot2::geom_sf(data=p1,size=4,shape=17,ggplot2::aes(colour="Observer"))+
                     ggplot2::geom_sf(data=testpoints_visible,size=0.7,ggplot2::aes(colour="Visible Area"))+
-                    ggplot2::scale_colour_manual(name=NULL,values = c("Observer"="white","Visible Area"="white"),guide=ggplot2::guide_legend(override.aes = list(shape=c(17,16))))+
+                    ggplot2::scale_colour_manual(name=NULL,values = c("Observer"="darkorange2","Visible Area"="darkorange2"),guide=ggplot2::guide_legend(override.aes = list(shape=c(17,16))))+
                     ggplot2::ggtitle(base::paste0("Visibility of ",p2_names[t]," from ",p1_names[f]))+
                     ggplot2::theme(legend.key = ggplot2::element_rect(fill = "darkgrey"))
                   ggplot2::ggsave(filename = base::paste0(outdir,"/visibilitymap_",p1_names[f],"_",p2_names[t],"_interval",i,".png"),device="png",plot=mapfig)

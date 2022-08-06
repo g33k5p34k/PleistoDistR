@@ -4,12 +4,14 @@
 \alias{getintervals_sealvl}
 \title{Generate interval file, binning by sea level}
 \usage{
-getintervals_sealvl(time, intervals, sealvl = bintanja_vandewal_2008)
+getintervals_sealvl(time, intervals, outdir, sealvl = bintanja_vandewal_2008)
 }
 \arguments{
 \item{time}{Maximum time cutoff in kya. PleistoDist calculates the average distance between islands over a user-defined period of time. Users will have to specify an upper time bound (in thousands of years (kya)) for their PleistoDist analysis, which by default can range from 0.1 kya to 3000 kya (i.e. 100 to 3,000,000 years ago). The lower time bound is fixed at the present day (0 kya).}
 
 \item{intervals}{Number of sea level interval bins to generate between the present day and the time-cutoff. More sea level intervals will lead to more fine-grained geomorphology calculations, at the expense of increased computational time.}
+
+\item{outdir}{Output directory for the interval file. If the specified output directory doesn't already exist, PleistoDist will create the output directory.}
 
 \item{sealvl}{Optional parameter defining the sea level reconstruction file. By default, PleistoDist uses the sea level reconstruction from Bintanja & van de Wal (2008). If you use a custom sea level reconstruction file, make sure the file has a Time column (in kya) and a Sealevel_Corrected column (in metres), and is saved in CSV format.}
 }
@@ -20,11 +22,11 @@ An interval file in the automatically-generated 'output' folder. This interval f
 #' This function generates an interval file, which is the master file for controlling all downstream PleistoDist calculations. This file essentially simplifies Pleistocene-era sea level change into a number of discrete sea level intervals.
 }
 \examples{
-\dontrun{
-#generate 20 sea level-binned intervals, with a cutoff of 20kya
-getintervals_sealvl(time=20,intervals=20)
-#if using a custom sea level reconstruction
-customsealvl <- read.csv("customsealvl.csv")
-getintervals_sealvl(time=20,intervals=20,sealvl=customsealvl)
-}
+#create temp directory
+path <- file.path(tempdir())
+#generate 5 sea level-binned intervals, with a cutoff of 20kya,
+#using default sea-level reconstruction by Bintanja & Van de Wal (2008)
+getintervals_sealvl(time=20,intervals=5,outdir=path)
+#if using sea-level reconstruction by Spratt & Lisecki (2016)
+getintervals_sealvl(time=20,intervals=5,outdir=path,sealvl=PleistoDist:::spratt_lisecki_2016)
 }
