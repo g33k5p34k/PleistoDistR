@@ -6,8 +6,9 @@ Authors@R:
            comment = c(ORCID = "0000-0001-7019-7871"))
 Description: Visualising and quantifying the effects of Pleistocene-era sea level change on islands over time. 
     This tool is used to generate maps of island extents for different Pleistocene-era sea levels and 
-    calculate various inter-island and intra island distance and geomorphological metrics over time, as described in 
-    Tan D, Gyllenhaal EF, Andersen MJ (2022) <doi:10.1101/2022.05.13.491891>
+    calculate various inter-island and intra-island distance and geo-morphological metrics over time, as described in 
+    Tan D, Gyllenhaal EF, Andersen MJ (2022) <doi:10.1101/2022.05.13.491891>. Vignettes for this package can be found 
+    at <https://davidbirdtan.com/pleistodist/>. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -29,7 +30,4 @@ Imports:
     gdistance,
     lwgeom,
     tibble,
-Suggests: 
-    R.rsp
-VignetteBuilder: R.rsp
 LazyData: true

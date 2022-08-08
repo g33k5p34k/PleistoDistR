@@ -44,14 +44,16 @@ three formats: ESRI shapefile format, a flat raster format (with no topography),
 the original bathymetric elevations of each island pixel, reprojected to the user-specified projected coordinate system.
 }
 \examples{
+\dontrun{
 #create temp directory
 path <- file.path(tempdir())
 #load bathymetry file
 fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#generate interval file for 5 intervals and 5kya cutoff time, binning by time
-getintervals_time(time=5,intervals=5,outdir=path)
+#generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+getintervals_time(time=20,intervals=2,outdir=path)
 #generate maps of the Fiji Archipelago with the EPSG:3141 projection,
-#with default interval file and a subsidence offset of 10 m per kya
+#with default interval file and a subsidence offset of 0 m per kya
 makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),
-    outdir=path,offset=-10)
+    outdir=path,offset=0)
+}
 }

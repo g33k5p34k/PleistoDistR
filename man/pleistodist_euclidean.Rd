@@ -32,7 +32,7 @@ is only performed once instead of repeatedly across different sea level or time 
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
-points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #convert points to feature geometry
 points <- sf::st_sfc(points)
 points <- sf::st_cast(points, "POINT")

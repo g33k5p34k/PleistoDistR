@@ -40,10 +40,11 @@ each constituent function individually. PleistoDist will return a value of NA if
 the time-weighted average area, perimeter, and surface area of each selected island.
 }
 \examples{
+\dontrun{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
-points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #convert points to feature geometry
 points <- sf::st_sfc(points)
 points <- sf::st_cast(points, "POINT")
@@ -53,11 +54,12 @@ sf::st_crs(points) <- 4326
 sf::write_sf(points,paste0(path,"/points.shp"))
 #load bathymetry file
 fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#generate interval file for 5 intervals and 5kya cutoff time, binning by time
-getintervals_time(time=5,intervals=5,outdir=path)
+#generate interval file for 1 interval and 20 kya cutoff time, binning by time
+getintervals_time(time=20,intervals=1,outdir=path)
 #generate maps based on interval file, projecting map using EPSG:3141
 makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #calculate island shape, perimeter, and surface area, projecting points using EPSG:3141
 pleistoshape_all(points=paste0(path,"/points.shp"),epsg=3141,
     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+}
 }

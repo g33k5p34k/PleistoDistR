@@ -19,7 +19,7 @@
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -100,7 +100,7 @@ pleistodist_euclidean <- function(points,epsg,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -110,8 +110,8 @@ pleistodist_euclidean <- function(points,epsg,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island centroid-to-centroid distances, projecting points using EPSG:3141
@@ -265,7 +265,7 @@ pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -275,8 +275,8 @@ pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island least shore-to-shore distances, projecting points using EPSG:3141
@@ -421,10 +421,11 @@ pleistodist_leastshore <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
 #' @examples
+#' \dontrun{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(178.68408,-16.82573), c(179.13585,-16.59487)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -434,13 +435,14 @@ pleistodist_leastshore <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-point least cost distances, projecting points using EPSG:3141
 #' pleistodist_leastcost(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+#' }
 #' @export
 pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -595,7 +597,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(178.68408,-16.82573), c(179.13585,-16.59487)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -605,16 +607,14 @@ pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 1 interval and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=1,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
-#' #calculate inter-island mean shore-to-shore distances, projecting points using EPSG:3141
+#' #calculate inter-island mean shore-to-shore distances, projecting points using EPSG:3141,
+#' #with 500 sampling points.
 #' pleistodist_meanshore(points=paste0(path,"/points.shp"),epsg=3141,
-#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,maxsamp=1000)
-#' #with 1 point sampled every 100m along the donor island shoreline
-#' pleistodist_meanshore(points=paste0(path,"/points.shp"),epsg=3141,
-#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,maxsamp=NA)
+#'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,maxsamp=500)
 #' @export
 pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp=1000) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -786,7 +786,7 @@ pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -796,8 +796,8 @@ pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate relative source island width, projecting points using EPSG:3141
@@ -931,10 +931,11 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) 
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs three matrices of island shape estimates in long format, with one column per interval in each matrix.
 #' @examples
+#' \dontrun{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -944,13 +945,14 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) 
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 1 interval and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=1,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate island shape, perimeter, and surface area, projecting points using EPSG:3141
 #' pleistoshape_all(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+#' }
 #' @export
 pleistoshape_all <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -1068,7 +1070,7 @@ pleistoshape_all <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -1078,8 +1080,8 @@ pleistoshape_all <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate island perimeter, projecting points using EPSG:3141
@@ -1170,7 +1172,7 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -1180,8 +1182,8 @@ pleistoshape_perimeter <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate 2D island area, projecting points using EPSG:3141
@@ -1272,7 +1274,7 @@ pleistoshape_area <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -1282,8 +1284,8 @@ pleistoshape_area <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate island surface area, projecting points using EPSG:3141
@@ -1389,7 +1391,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(179.41256,-17.79426), c(179.27600,-17.97850)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -1399,8 +1401,8 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 2 intervals and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=2,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate net migration, for centroid-to-centroid distances, projecting points using EPSG:3141
@@ -1533,7 +1535,7 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile,mapdir,outdir) 
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
-#' points <- sf::st_multipoint(rbind(c(177.43035,-16.88739), c(178.81200,-17.68200)))
+#' points <- sf::st_multipoint(rbind(c(178.68408,-16.82573), c(179.13585,-16.59487)))
 #' #convert points to feature geometry
 #' points <- sf::st_sfc(points)
 #' points <- sf::st_cast(points, "POINT")
@@ -1543,8 +1545,8 @@ pleistodist_netmig <- function(points,epsg,disttype,intervalfile,mapdir,outdir) 
 #' sf::write_sf(points,paste0(path,"/points.shp"))
 #' #load bathymetry file
 #' fiji <- system.file("extdata","FJ.asc",package="PleistoDist")
-#' #generate interval file for 5 intervals and 5kya cutoff time, binning by time
-#' getintervals_time(time=5,intervals=5,outdir=path)
+#' #generate interval file for 1 interval and 20 kya cutoff time, binning by time
+#' getintervals_time(time=20,intervals=1,outdir=path)
 #' #generate maps based on interval file, projecting map using EPSG:3141
 #' makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),outdir=path)
 #' #calculate inter-island visibility, projecting points using EPSG:3141,
