@@ -23,6 +23,7 @@ This package requires at least R v4.0.5 to function, and will automatically load
 
 ## Vignettes
 
+* [Vignette 0: A basic PleistoDist tutorial](https://davidbirdtan.com/pleistodist/introduction/)
 * [Vignette 1: Calculating inter-island distances](https://davidbirdtan.com/pleistodist/vignette1/)
 * [Vignette 2: Species-area relationships](https://davidbirdtan.com/pleistodist/vignette2/)
 * [Vignette 3: Calculating net inter-island migration](https://davidbirdtan.com/pleistodist/vignette3/)
