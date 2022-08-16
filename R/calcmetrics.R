@@ -421,7 +421,7 @@ pleistodist_leastshore <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -931,7 +931,7 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) 
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs three matrices of island shape estimates in long format, with one column per interval in each matrix.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -953,6 +953,7 @@ pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) 
 #' pleistoshape_all(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 #' }
+#'
 #' @export
 pleistoshape_all <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.

@@ -29,7 +29,7 @@
 #' @return This function generates map outputs corresponding with the sea levels specified in the interval file. Maps are generated in flat ASCII raster (without topography),
 #'  topographic ASCII raster, and ESRI shapefile formats.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #load bathymetry file
