@@ -27,3 +27,14 @@ This file describes the simulation scripts used to demonstrate the utility of Pl
 **plot_samoa_slim.R:** Script for making barplots for F<sub>ST</sub> and nucleotide diversity for select islands and island pairs. Pairs are chosen to demonstrate the effects of isolation and island size.
 
 **plot_fiji_msp.R:** Script for making barplots for F<sub>ST</sub> and nucleotide diversity for the island pair.
+
+
+## Spatial simulation GIFs
+
+**glacial_colonization.gif:** GIF from SLiM GUI of colonzation starting during an interval near the last glacial maximum sea level.
+
+![Glacial Colonization GIF](https://github.com/g33k5p34k/PleistoDistR/blob/main/simulation_scripts/glacial_colonization.gif)
+
+**interglacial_colonization.gif:** GIF from SLiM GUI of colonzation starting during an interval near the last glacial maximum sea level.
+
+![Interglacial Colonization GIF](https://github.com/g33k5p34k/PleistoDistR/blob/main/simulation_scripts/interglacial_colonization.gif)
