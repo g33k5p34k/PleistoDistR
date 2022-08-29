@@ -38,6 +38,7 @@ is/are underwater, then a value of NA is returned. After calculating the pairwis
 the time-weighted average centroid-to-centroid distance between each island pair.
 }
 \examples{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
@@ -58,4 +59,5 @@ makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),o
 #calculate inter-island centroid-to-centroid distances, projecting points using EPSG:3141
 pleistodist_centroid(points=paste0(path,"/points.shp"),epsg=3141,
     intervalfile=paste0(path,"/intervals.csv"), mapdir=path,outdir=path)
+}
 }

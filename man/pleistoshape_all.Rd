@@ -40,7 +40,7 @@ each constituent function individually. PleistoDist will return a value of NA if
 the time-weighted average area, perimeter, and surface area of each selected island.
 }
 \examples{
-\dontrun{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
@@ -62,4 +62,5 @@ makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),o
 pleistoshape_all(points=paste0(path,"/points.shp"),epsg=3141,
     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
 }
+
 }

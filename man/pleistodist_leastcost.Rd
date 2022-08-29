@@ -38,7 +38,7 @@ is/are underwater, then a value of NA is returned. After calculating the pairwis
 the time-weighted average least-cost distance between each pair of points.
 }
 \examples{
-\dontrun{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile

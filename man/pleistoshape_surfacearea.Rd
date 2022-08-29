@@ -37,6 +37,7 @@ This function calculates the surface area of user-specified islands at each time
 PleistoDist will return a value of NA if the island is submerged underwater for that particular interval.
 }
 \examples{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
@@ -57,4 +58,5 @@ makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),o
 #calculate island surface area, projecting points using EPSG:3141
 pleistoshape_surfacearea(points=paste0(path,"/points.shp"),epsg=3141,
     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+}
 }

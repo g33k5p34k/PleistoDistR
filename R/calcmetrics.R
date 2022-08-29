@@ -97,6 +97,7 @@ pleistodist_euclidean <- function(points,epsg,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island centroid-to-centroid distances in long format, with
 #' one column per interval. This function also generates a file of pairwise relative island widths, which is used for calculating the net inter-island migration ratio.
 #' @examples
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -117,6 +118,7 @@ pleistodist_euclidean <- function(points,epsg,outdir) {
 #' #calculate inter-island centroid-to-centroid distances, projecting points using EPSG:3141
 #' pleistodist_centroid(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"), mapdir=path,outdir=path)
+#' }
 #' @export
 pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -262,6 +264,7 @@ pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs a pairwise distance matrix of pairwise inter-island least shore-to-shore distances in long format, with
 #' one column per interval.
 #' @examples
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -282,6 +285,7 @@ pleistodist_centroid <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' #calculate inter-island least shore-to-shore distances, projecting points using EPSG:3141
 #' pleistodist_leastshore(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+#' }
 #' @export
 pleistodist_leastshore <- function(points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -1272,6 +1276,7 @@ pleistoshape_area <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' If the specified output directory doesn't already exist, PleistoDist will create the output directory.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
 #' @examples
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -1292,6 +1297,7 @@ pleistoshape_area <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' #calculate island surface area, projecting points using EPSG:3141
 #' pleistoshape_surfacearea(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+#' }
 #' @export
 pleistoshape_surfacearea <- function (points,epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -1389,6 +1395,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' All pleistodist_netmig() outputs will also be written to this folder.
 #' @return This function outputs a matrix of island surface area estimates in long format, with one column per interval.
 #' @examples
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -1409,6 +1416,7 @@ pleistoshape_surfacearea <- function (points,epsg,intervalfile,mapdir,outdir) {
 #' #calculate net migration, for centroid-to-centroid distances, projecting points using EPSG:3141
 #' pleistodist_netmig(points=paste0(path,"/points.shp"),epsg=3141,disttype="centroid",
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+#' }
 #' @importFrom dplyr %>%
 #' @export
 pleistodist_netmig <- function(points,epsg,disttype,intervalfile,mapdir,outdir) {

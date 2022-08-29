@@ -47,6 +47,7 @@ net migration rate is greater than 1, then the net movement of propagules occurs
 is less than 1, then the net movement of propagules occurs from island 2 to island 1.
 }
 \examples{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
@@ -67,4 +68,5 @@ makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),o
 #calculate net migration, for centroid-to-centroid distances, projecting points using EPSG:3141
 pleistodist_netmig(points=paste0(path,"/points.shp"),epsg=3141,disttype="centroid",
     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+}
 }

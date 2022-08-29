@@ -44,7 +44,7 @@ three formats: ESRI shapefile format, a flat raster format (with no topography),
 the original bathymetric elevations of each island pixel, reprojected to the user-specified projected coordinate system.
 }
 \examples{
-\dontrun{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #load bathymetry file
