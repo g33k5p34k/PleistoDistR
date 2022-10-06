@@ -15,9 +15,9 @@
 #' #using default sea-level reconstruction by Bintanja & Van de Wal (2008)
 #' getintervals_time(time=5,intervals=5,outdir=path)
 #' #if using sea-level reconstruction by Spratt & Lisecki (2016)
-#' getintervals_time(time=5,intervals=5,outdir=path,sealvl=PleistoDist:::spratt_lisecki_2016)
+#' getintervals_time(time=5,intervals=5,outdir=path,sealvl=PleistoDist::spratt_lisecki_2016)
 #' @export
-getintervals_time <- function(time,intervals,outdir,sealvl=bintanja_vandewal_2008) {
+getintervals_time <- function(time,intervals,outdir,sealvl=PleistoDist::bintanja_vandewal_2008) {
 
   #create output folder
   if (base::dir.exists(outdir)==FALSE) {
@@ -110,9 +110,9 @@ getintervals_time <- function(time,intervals,outdir,sealvl=bintanja_vandewal_200
 #' #using default sea-level reconstruction by Bintanja & Van de Wal (2008)
 #' getintervals_sealvl(time=20,intervals=5,outdir=path)
 #' #if using sea-level reconstruction by Spratt & Lisecki (2016)
-#' getintervals_sealvl(time=20,intervals=5,outdir=path,sealvl=PleistoDist:::spratt_lisecki_2016)
+#' getintervals_sealvl(time=20,intervals=5,outdir=path,sealvl=PleistoDist::spratt_lisecki_2016)
 #' @export
-getintervals_sealvl <- function(time,intervals,outdir,sealvl=bintanja_vandewal_2008) {
+getintervals_sealvl <- function(time,intervals,outdir,sealvl=PleistoDist::bintanja_vandewal_2008) {
 
   #time should be in kya (i.e. 10,000 years = 10 kya)
 

@@ -4,7 +4,12 @@
 \alias{getintervals_time}
 \title{Generate interval file, binning by time}
 \usage{
-getintervals_time(time, intervals, outdir, sealvl = bintanja_vandewal_2008)
+getintervals_time(
+  time,
+  intervals,
+  outdir,
+  sealvl = PleistoDist::bintanja_vandewal_2008
+)
 }
 \arguments{
 \item{time}{Maximum time cutoff in kya. PleistoDist calculates the average distance between islands over a user-defined period of time. Users will have to specify an upper time bound (in thousands of years (kya)) for their PleistoDist analysis, which by default ranges from 0.1 kya to 3000 kya (i.e. 100 to 3,000,000 years ago). The lower time bound is fixed at the present day (0 kya).}
@@ -28,5 +33,5 @@ path <- file.path(tempdir())
 #using default sea-level reconstruction by Bintanja & Van de Wal (2008)
 getintervals_time(time=5,intervals=5,outdir=path)
 #if using sea-level reconstruction by Spratt & Lisecki (2016)
-getintervals_time(time=5,intervals=5,outdir=path,sealvl=PleistoDist:::spratt_lisecki_2016)
+getintervals_time(time=5,intervals=5,outdir=path,sealvl=PleistoDist::spratt_lisecki_2016)
 }
