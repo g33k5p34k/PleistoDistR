@@ -16,7 +16,7 @@ A data frame with 800 rows and 2 columns:
 }
 }
 \source{
-\url{https://doi.org/10.5194/cp-12-1079-2016}
+\url{https://cp.copernicus.org/articles/12/1079/2016/}
 }
 \usage{
 spratt_lisecki_2016

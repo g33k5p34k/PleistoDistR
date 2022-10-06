@@ -18,7 +18,7 @@ A data frame with 30,002 rows and 3 columns:
 }
 }
 \source{
-\url{https://doi.org/10.1038/nature07158}
+\url{https://www.nature.com/articles/nature07158}
 }
 \usage{
 bintanja_vandewal_2008

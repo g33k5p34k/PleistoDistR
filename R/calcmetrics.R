@@ -494,7 +494,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
     invector <- sf::st_read(base::paste0(mapdir,"/shapefile/interval",i,".shp")) #load interval shapefile
     inraster <- raster::raster(base::paste0(mapdir,"/raster_flat/interval",i,".tif")) #load flat raster for least cost path calculation
     inraster[is.na(inraster[])] <- 1/9999999 #convert raster NA values (water) to very low conductance values
-    trraster <- gdistance::transition(inraster,mean,directions=16) #convert inraster into a transition matrix
+    trraster <- gdistance::transition(inraster,mean,directions=8) #convert inraster into a transition matrix
     trraster_corr <- gdistance::geoCorrection(trraster,type="c",scl=FALSE) #apply geographical correction to the transition matrix (for least cost path)
     intvlname <- base::paste0("interval",i)
 
@@ -598,6 +598,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' @return This function outputs an asymmetric pairwise distance matrix of mean shore-to-shore distances in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
 #' @examples
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -619,6 +620,7 @@ pleistodist_leastcost <- function(points,epsg,intervalfile,mapdir,outdir) {
 #' #with 500 sampling points.
 #' pleistodist_meanshore(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path,maxsamp=500)
+#' }
 #' @export
 pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp=1000) {
   #check for existence of output directory, create output directory if it doesn't already exist.
@@ -787,6 +789,7 @@ pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp
 #' @return This function outputs an asymmetric pairwise distance matrix of relative island widths in long format, with
 #' one column per interval. Because this distance matrix is asymmetric, the directionality of the distance calculation matters.
 #' @examples
+#' \donttest{
 #' #create temp directory
 #' path <- file.path(tempdir())
 #' #create points shapefile
@@ -807,6 +810,7 @@ pleistodist_meanshore <- function(points,epsg,intervalfile,mapdir,outdir,maxsamp
 #' #calculate relative source island width, projecting points using EPSG:3141
 #' pleistodist_relativewidth(points=paste0(path,"/points.shp"),epsg=3141,
 #'     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+#' }
 #' @export
 pleistodist_relativewidth <- function (points, epsg,intervalfile,mapdir,outdir) {
   #check for existence of output directory, create output directory if it doesn't already exist.

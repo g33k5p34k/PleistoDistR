@@ -11,7 +11,7 @@
 #'   \item{Sealevel_Corrected}{Sea level estimate, with present day set to 0
 #'   (metres)}
 #' }
-#' @source <https://doi.org/10.1038/nature07158>
+#' @source <https://www.nature.com/articles/nature07158>
 "bintanja_vandewal_2008"
 
 #' Alternative Sea Level Reconstruction Dataset (Spratt & Lisecki, 2016)
@@ -25,5 +25,5 @@
 #'   \item{Sealevel_Corrected}{Sea level estimate, with present day set to 0
 #'   (metres)}
 #' }
-#' @source <https://doi.org/10.5194/cp-12-1079-2016>
+#' @source <https://cp.copernicus.org/articles/12/1079/2016/>
 "spratt_lisecki_2016"

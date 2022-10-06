@@ -41,6 +41,7 @@ relative to the orientation of the receiving island, and is mostly needed for ca
 in chapter 6 of MacArthur and Wilson (1967).
 }
 \examples{
+\donttest{
 #create temp directory
 path <- file.path(tempdir())
 #create points shapefile
@@ -61,4 +62,5 @@ makemaps(inputraster=fiji,epsg=3141,intervalfile=paste0(path,"/intervals.csv"),o
 #calculate relative source island width, projecting points using EPSG:3141
 pleistodist_relativewidth(points=paste0(path,"/points.shp"),epsg=3141,
     intervalfile=paste0(path,"/intervals.csv"),mapdir=path,outdir=path)
+}
 }
