@@ -69,7 +69,7 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
 
   numintervals = max(intervalfile$Interval)
 
-  for (x in 0:numintervals) {
+  for (x in intervalfile$Interval) {
 
     message("Generating maps for interval ",x,", sea level = ",intervalfile$MeanDepth[x+1])
 
