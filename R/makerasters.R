@@ -77,8 +77,8 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
     inputraster_offset <- inputraster - (offset * sum(intervalfile$TimeInterval[1:(x+1)]))
 
     #reclassify values below interval sea level as NA
-    convmat <- cbind(as.numeric(terra::global(inputraster_offset,fun="min")),intervalfile$MeanDepth[x+1],NA)
-    outraster <- terra::classify(inputraster_offset,convmat,right=FALSE)
+    convmat <- cbind(as.numeric(terra::global(inputraster_offset,fun="min",na.rm=T)),intervalfile$MeanDepth[x+1],NA)
+    outraster <- terra::classify(inputraster_offset,convmat,right=NA)
 
     #reproject outraster using bilinear method (since raw input is continuous)
     outraster_projected <- terra::project(outraster,base::paste0("EPSG:",epsg),method="bilinear")
@@ -87,8 +87,8 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
     terra::writeRaster(outraster_projected,paste0(outdir,"/raster_topo/interval",x,".tif"),filetype="GTiff",overwrite=TRUE)
 
     #reclassify all values as 1 to create flat raster
-    convmat <- cbind(intervalfile$MeanDepth[x+1],as.numeric(terra::global(inputraster_offset,fun="max")),1)
-    outraster_flat <- terra::classify(outraster_projected,convmat)
+    convmat <- cbind(intervalfile$MeanDepth[x+1],as.numeric(terra::global(inputraster_offset,fun="max",na.rm=T)),1)
+    outraster_flat <- terra::classify(outraster_projected,convmat,right=TRUE)
 
     #write flat raster to raster_flat folder
     terra::writeRaster(outraster_flat,paste0(outdir,"/raster_flat/interval",x,".tif"),filetype="GTiff",overwrite=TRUE)
