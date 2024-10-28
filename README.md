@@ -1,4 +1,6 @@
-# PleistoDist R
+# PleistoDist R 
+
+<img src="https://github.com/g33k5p34k/PleistoDist/blob/main/images/Hexlogo4_small.png" width="200" align="right" />
 Distance matrices between islands normalised over Pleistocene time. A complete ground-up rebuild of PleistoDist for use with R. 
 
 ## Introduction
