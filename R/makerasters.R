@@ -98,7 +98,8 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
 
     #write reprojected vector to shapefile folder
     terra::writeVector(outvector,paste0(outdir,"/shapefile/interval",x,".shp"),filetype="ESRI Shapefile",overwrite=TRUE)
+
+    gc()
   }
   message("Done!")
-  gc()
 }
