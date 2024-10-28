@@ -100,4 +100,5 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
     terra::writeVector(outvector,paste0(outdir,"/shapefile/interval",x,".shp"),filetype="ESRI Shapefile",overwrite=TRUE)
   }
   message("Done!")
+  gc()
 }
