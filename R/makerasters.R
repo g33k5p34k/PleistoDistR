@@ -73,12 +73,8 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
 
     message("Generating maps for interval ",x,", sea level = ",intervalfile$MeanDepth[x+1])
 
-    #apply offset value to inputraster
-    inputraster_offset <- inputraster - (offset * sum(intervalfile$TimeInterval[1:(x+1)]))
-
-    #reclassify values below interval sea level as NA
-    convmat <- cbind(as.numeric(terra::global(inputraster_offset,fun="min",na.rm=T)),intervalfile$MeanDepth[x+1],NA)
-    outraster <- terra::classify(inputraster_offset,convmat,right=NA)
+    #apply offset value to inputraster and zero raster elevation to interval sea level
+    outraster <- terra::clamp(inputraster - (offset * sum(intervalfile$TimeInterval[1:(x+1)])) - intervalfile$MeanDepth[x+1], lower = 0, value = FALSE)
 
     #reproject outraster using bilinear method (since raw input is continuous)
     outraster_projected <- terra::project(outraster,base::paste0("EPSG:",epsg),method="bilinear")
