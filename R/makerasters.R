@@ -83,7 +83,7 @@ makemaps <- function(inputraster,epsg,intervalfile,outdir,offset=0) {
     terra::writeRaster(outraster_projected,paste0(outdir,"/raster_topo/interval",x,".tif"),filetype="GTiff",overwrite=TRUE)
 
     #reclassify all values as 1 to create flat raster
-    convmat <- cbind(intervalfile$MeanDepth[x+1],as.numeric(terra::global(inputraster_offset,fun="max",na.rm=T)),1)
+    convmat <- cbind(intervalfile$MeanDepth[x+1],as.numeric(terra::global(outraster,fun="max",na.rm=T)),1)
     outraster_flat <- terra::classify(outraster_projected,convmat,right=TRUE)
 
     #write flat raster to raster_flat folder
